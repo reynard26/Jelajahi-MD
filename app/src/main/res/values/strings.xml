@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">JelajahiApp</string>
+    <string name="home">Home</string>
+    <string name="menu_home">Home Menu</string>
+    <string name="explore">Explore</string>
+    <string name="menu_explore">Explore Menu</string>
+    <string name="camera">Camera</string>
+    <string name="menu_camera">Camera Menu</string>
+    <string name="community">Community</string>
+    <string name="menu_community">Community Menu</string>
+    <string name="liked">Liked</string>
+    <string name="menu_liked">Liked Menu</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="login">Login</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="getting_started">Getting Started</string>
+    <string name="account_continue">Create Account to Continue</string>
+    <string name="lets_something">Let\'s get something</string>
+    <string name="good_to">Good to see you again, Penjelajah!</string>
+    <string name="or">OR</string>
+    <string name="sign_in_google">Sign in with Google</string>
+    <string name="loading_in_google">Loading Sign in with Google</string>
+    <string name="sign_up_google">Sign up with Google</string>
+    <string name="loading_up_google">Loading Sign up with Google</string>
+</resources>
