@@ -25,8 +25,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SignupContent(            email = null,
-                        onSignInSubmitted = { _, _, _ -> })
+                    LoginContent(            email = null,
+                        onSignInSubmitted = { _, _-> })
                 }
             }
         }

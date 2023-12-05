@@ -65,13 +65,13 @@ fun SignupContent(
                 fontFamily = fonts,
                 fontWeight = FontWeight.ExtraBold,
                 color = purple100,
-                fontSize = 28.sp
+                fontSize = 27.sp
             )
 
             Text(text = stringResource(id = R.string.account_continue),
                 fontFamily = fonts,
                 color = grey40,
-                fontSize = 17.sp)
+                fontSize = 15.sp)
 
             Spacer(modifier = Modifier.height(4.dp))
 
@@ -115,7 +115,7 @@ fun SignupContent(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp),
+                    .padding(vertical = 8.dp),
                 enabled = emailState.isValid && passwordState.isValid
             ) {
                 Text(
@@ -138,7 +138,8 @@ fun SignupContent(
             ButtonGoogle(
                 text = stringResource(id = R.string.sign_up_google),
                 loadingText = stringResource(id = R.string.loading_up_google),
-                modifier = Modifier .fillMaxWidth()) {
+                modifier = Modifier .fillMaxWidth()
+                    .padding(vertical = 8.dp)) {
 
             }
         }

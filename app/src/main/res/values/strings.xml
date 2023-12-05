@@ -17,9 +17,9 @@
     <string name="hide_password">Hide password</string>
     <string name="login">Login</string>
     <string name="dismiss">Dismiss</string>
-    <string name="getting_started">Getting Started</string>
-    <string name="account_continue">Create Account to Continue</string>
-    <string name="lets_something">Let\'s get something</string>
+    <string name="getting_started">Begin Your Exploration</string>
+    <string name="account_continue">Create an account to continue!</string>
+    <string name="lets_something">Let The Exploration Begin</string>
     <string name="good_to">Good to see you again, Penjelajah!</string>
     <string name="or">OR</string>
     <string name="sign_in_google">Sign in with Google</string>
