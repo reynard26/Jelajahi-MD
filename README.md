@@ -5,7 +5,7 @@
 # JelajahI
 Welcome to **JelajahI**, the ultimate cultural travel companion designed to immerse you in the diverse and enchanting landscapes of Indonesia. Our innovative app utilizes cutting-edge image recognition features to recommend regional destinations based on your surroundings, offering a personalized journey through the heart of Indonesia's cultural tapestry. Simply capture the essence of your environment through photos, and let JelajahI unfold a world of possibilities with tailor-made recommendations. Delve into rich cultural insights, from traditional ceremonies to ancient temples, accompanied by detailed descriptions and curated recommendations for each area. JelajahI isn't just an app; it's a vibrant community of cultural enthusiasts. Share your own stories, traditions, and tips, contributing to a global exchange of knowledge that can turn hidden gems into must-visit destinations. Connect cultures, unite hearts, and embark on a journey of cultural wonders with JelajahI—where every photo is a portal to a world of discovery. Let JelajahI be your trusted companion on the path to cultural exploration in Indonesia! 🌅🗺️📍 
 
-# Android Developer Used
+# Android Mobile Developer Used
 JelajahI utilizes the **Figma** platform for crafting the UI and UX of the application, aiming to provide a more realistic look and experience for users. Additionally, the application is developed using **Jetpack Compose**. Jetpack Compose is a modern UI toolkit for building native Android applications, and it is based on the Kotlin programming.
 
 ## Mockup Preview
