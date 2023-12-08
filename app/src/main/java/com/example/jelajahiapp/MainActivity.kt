@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.jelajahiapp.ui.screen.authorization.LoginContent
 import com.example.jelajahiapp.ui.screen.authorization.LoginScreen
 import com.example.jelajahiapp.ui.screen.authorization.SignupContent
+import com.example.jelajahiapp.ui.screen.community.AddCommunityScreen
 import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,8 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginContent(            email = null,
-                        onSignInSubmitted = { _, _-> })
+                    AddCommunityScreen( onCommunitySubmited = { _, _, _-> })
                 }
             }
         }

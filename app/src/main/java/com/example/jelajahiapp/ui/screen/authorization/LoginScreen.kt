@@ -117,7 +117,7 @@ fun LoginContent(
                 }
                 Email(emailState, onImeAction = { focusRequester.requestFocus() })
 
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 val passwordState = remember { PasswordState() }
 
