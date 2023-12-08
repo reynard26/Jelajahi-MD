@@ -76,6 +76,8 @@ fun LikedItem(
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
+                modifier = Modifier
+                    .padding(3.dp, 0.dp, 3.dp, 0.dp)
             )
             Spacer(modifier = Modifier.height(5.dp))
             Row {
@@ -101,7 +103,9 @@ fun LikedItem(
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Normal,
                 fontSize = 13.sp,
-                color = grey40
+                color = grey40,
+                modifier = Modifier
+                    .padding(3.dp, 0.dp, 3.dp, 0.dp)
             )
         }
         Button(
