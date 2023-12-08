@@ -21,6 +21,7 @@ import com.example.jelajahiapp.ui.theme.purple100
 fun CommunityTextField(
     textFieldStateCommunity: dataCommunityState,
     label: String,
+    modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Next,
     onImeAction: () -> Unit = {}
 ) {

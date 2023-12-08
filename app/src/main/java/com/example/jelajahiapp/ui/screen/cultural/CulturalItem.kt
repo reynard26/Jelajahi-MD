@@ -1,11 +1,10 @@
-package com.example.jelajahiapp.ui.screen.home
+package com.example.jelajahiapp.ui.screen.cultural
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,61 +28,61 @@ import androidx.compose.ui.unit.sp
 import com.example.jelajahiapp.R
 import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 import com.example.jelajahiapp.ui.theme.Shapes
-import com.example.jelajahiapp.ui.theme.green87
-import com.example.jelajahiapp.ui.theme.grey40
 import com.example.jelajahiapp.ui.theme.purple100
 
 @Composable
-fun DestinationItem(
-    placeName: String,
+fun CulturalItem(
+    itemName: String,
     image: Int,
-    address: String,
+    from: String,
     modifier: Modifier = Modifier,
 ) {
 
     Column(
         modifier = modifier
-            .border(BorderStroke(1.dp, color = green87), shape = Shapes.large)
-            .width(170.dp)
+            .border(BorderStroke(2.dp, color = purple100), shape = Shapes.large)
+            .width(180.dp)
             .padding(8.dp), // Ensure the Column takes the full width
         horizontalAlignment = Alignment.Start
     ) {
-        Image(
-            painter = painterResource(image),
-            contentDescription = placeName,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .padding(5.dp, 10.dp, 5.dp, 7.dp)
-                .width(155.dp)
-                .height(120.dp)
-                .clip(Shapes.large)
-        )
-
         Text(
-            text = placeName,
+            text = itemName,
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.ExtraBold,
-            fontSize = 17.sp,
+            color = purple100,
+            fontSize = 18.sp,
             modifier = Modifier
-                .padding(5.dp, 0.dp, 5.dp, 0.dp)
+                .padding(3.dp, 0.dp, 3.dp, 0.dp)
         )
         Row (modifier = Modifier
-            .padding(2.dp,2.dp, 2.dp, 10.dp)){
+            .padding(2.dp,2.dp, 2.dp, 0.dp)){
             Icon(
                 imageVector = Icons.Default.Place,
                 contentDescription = null,
-                tint = purple100,
+                tint = Color.Gray,
                 modifier = modifier
                     .size(20.dp)
             )
 
             Text(
-                text = address,
+                text = from,
                 overflow = TextOverflow.Ellipsis,
-                fontWeight = FontWeight.Bold,
-                color = Color.Gray
+                fontWeight = FontWeight.Medium,
+                color = Color.Gray,
+                fontSize = 15.sp
             )
         }
+        Image(
+            painter = painterResource(image),
+            contentDescription = itemName,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .padding(5.dp, 5.dp, 5.dp, 7.dp)
+                .width(170.dp)
+                .height(110.dp)
+                .clip(Shapes.large)
+        )
+
     }
 }
 
@@ -91,10 +90,10 @@ fun DestinationItem(
 @Composable
 fun ItemPreview() {
     JelajahiAppTheme {
-        DestinationItem(
-            placeName = "Golden Retriever",
+        CulturalItem(
+            itemName = "Golden Retriever",
             image = R.drawable.foto1,
-            address = "Inggris"
+            from = "Inggris"
         )
     }
 }
