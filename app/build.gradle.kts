@@ -88,4 +88,12 @@ dependencies {
     implementation ("androidx.navigation:navigation-compose:2.7.5")
     androidTestImplementation ("androidx.navigation:navigation-testing:2.6.0")
 
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // Pager and Indicators - Accompanist
+    implementation ("com.google.accompanist:accompanist-pager:0.32.0")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.32.0")
+    // Splash API
+    implementation ("androidx.core:core-splashscreen:1.0.0-beta01")
+
 }
