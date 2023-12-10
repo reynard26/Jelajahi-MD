@@ -9,7 +9,6 @@ import com.example.jelajahiapp.navigation.Screen
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 class SplashViewModel @Inject constructor(
     private val repository: OnBoardingRepository
 ) : ViewModel() {
@@ -24,7 +23,7 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             repository.readOnBoardingState().collect { completed ->
                 if (completed) {
-                    _startDestination.value = Screen.Welcome.route
+                    _startDestination.value = Screen.Home.route
                 } else {
                     _startDestination.value = Screen.Welcome.route
                 }

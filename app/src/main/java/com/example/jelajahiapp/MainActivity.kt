@@ -7,7 +7,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,18 +17,23 @@ import com.example.jelajahiapp.navigation.NavGraph
 import com.example.jelajahiapp.ui.screen.splash.SplashViewModel
 import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@ExperimentalAnimationApi
+@ExperimentalPagerApi
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     @Inject
     lateinit var splashViewModel: SplashViewModel
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().setKeepOnScreenCondition {
+            !splashViewModel.isLoading.value
+        }
         setContent {
-            installSplashScreen().setKeepOnScreenCondition {
-                !splashViewModel.isLoading.value
-            }
             JelajahiAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(

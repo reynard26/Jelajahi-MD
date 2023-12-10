@@ -21,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +35,7 @@ import com.example.jelajahiapp.ui.theme.Shapes
 import com.example.jelajahiapp.ui.theme.fonts
 import com.example.jelajahiapp.ui.theme.green87
 import com.example.jelajahiapp.ui.theme.purple100
+import com.example.jelajahiapp.ui.theme.white10
 import com.example.jelajahiapp.ui.theme.white100
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -65,19 +65,26 @@ fun OnBoardingScreen(
         ) { position ->
             ContentOnboarding(dataOnBoarding = pages[position])
         }
-        HorizontalPagerIndicator(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .weight(1f),
-            pagerState = pagerState
-        )
-        StartButton(
-            modifier = Modifier.weight(1f),
-            pagerState = pagerState
-        ) {
-            onboardingViewModel.saveOnBoardingState(completed = true)
-            navController.popBackStack()
-            navController.navigate(Screen.Home.route)
+
+        Column(modifier = Modifier.fillMaxSize()
+            .weight(0.8f)
+            .background(color = green87)) {
+            StartButton(
+                modifier = Modifier.weight(1f),
+                pagerState = pagerState
+            ) {
+                onboardingViewModel.saveOnBoardingState(completed = true)
+                navController.popBackStack()
+                navController.navigate(Screen.Home.route)
+            }
+            HorizontalPagerIndicator(
+                activeColor = white100,
+                inactiveColor = white10,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .weight(0.7f),
+                pagerState = pagerState
+            )
         }
     }
 }
@@ -118,9 +125,10 @@ fun ContentOnboarding(dataOnBoarding: DataOnBoarding,
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .weight(1.2f)
                 .padding()
-                .background(color = green87,
+                .background(
+                    color = green87,
                     shape = RoundedCornerShape(
                         topStart = Shapes.extraLarge.topStart,
                         topEnd = Shapes.extraLarge.topEnd,
@@ -166,7 +174,7 @@ fun StartButton(
 ) {
     Row(
         modifier = modifier
-            .padding(horizontal = 40.dp),
+            .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -177,7 +185,8 @@ fun StartButton(
             Button(
                 onClick = onClick,
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.White
+                    contentColor = white100,
+                    backgroundColor = purple100
                 )
             ) {
                 androidx.compose.material.Text(text = "Start")

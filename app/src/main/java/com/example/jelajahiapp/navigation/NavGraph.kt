@@ -1,6 +1,5 @@
 package com.example.jelajahiapp.navigation
 
-import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -24,7 +23,7 @@ fun NavGraph(
             OnBoardingScreen(navController = navController)
         }
         composable(route = Screen.Home.route) {
-//            HomeScreen()
+
         }
     }
 }
