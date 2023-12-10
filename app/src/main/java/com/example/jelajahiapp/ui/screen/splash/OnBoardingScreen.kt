@@ -75,7 +75,7 @@ fun OnBoardingScreen(
             ) {
                 onboardingViewModel.saveOnBoardingState(completed = true)
                 navController.popBackStack()
-                navController.navigate(Screen.Home.route)
+                navController.navigate(Screen.Login.route)
             }
             HorizontalPagerIndicator(
                 activeColor = white100,

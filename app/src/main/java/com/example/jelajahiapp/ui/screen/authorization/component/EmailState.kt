@@ -1,7 +1,6 @@
 package com.example.jelajahiapp.ui.screen.authorization.component
 
 import com.example.jelajahiapp.ui.screen.authorization.TextFieldState
-import com.example.jelajahiapp.ui.screen.authorization.textFieldStateSaver
 import java.util.regex.Pattern
 
 // Consider an email valid if there's some text before and after a "@"
@@ -26,5 +25,3 @@ private fun emailValidationError(email: String): String {
 private fun isEmailValid(email: String): Boolean {
     return Pattern.matches(EMAIL_VALIDATION_REGEX, email)
 }
-
-val EmailStateSaver = textFieldStateSaver(EmailState())

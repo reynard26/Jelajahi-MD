@@ -31,7 +31,6 @@ import com.example.jelajahiapp.ui.screen.authorization.component.ButtonGoogle
 import com.example.jelajahiapp.ui.screen.authorization.component.Email
 import com.example.jelajahiapp.ui.screen.authorization.component.Username
 import com.example.jelajahiapp.ui.screen.authorization.component.EmailState
-import com.example.jelajahiapp.ui.screen.authorization.component.EmailStateSaver
 import com.example.jelajahiapp.ui.screen.authorization.component.Password
 import com.example.jelajahiapp.ui.screen.authorization.component.UsernameState
 import com.example.jelajahiapp.ui.theme.JelajahiAppTheme

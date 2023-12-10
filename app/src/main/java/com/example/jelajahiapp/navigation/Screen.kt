@@ -3,6 +3,8 @@ package com.example.jelajahiapp.navigation
 sealed class Screen(val route: String)
 {
     object Welcome : Screen("onboarding")
+
+    object Login : Screen("login")
     object Home : Screen("home")
     object Profile : Screen("creator profile")
     object Favorite : Screen("favorite")
