@@ -2,10 +2,12 @@ package com.example.jelajahiapp.data
 
 import android.util.Log
 import com.example.jelajahiapp.data.response.ResponseLogin
+import com.example.jelajahiapp.data.response.ResponseUser
 import com.example.jelajahiapp.data.retrofit.ApiService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-
+import kotlinx.coroutines.flow.flowOn
 
 
 class JelajahiRepository(
@@ -29,6 +31,18 @@ class JelajahiRepository(
             }
         }
     }
+    suspend fun register(
+        userName: String, email: String, password: String,
+    ): Flow<Result<ResponseUser>> = flow {
+        emit(Result.Loading)
+        try {
+            val response = apiService.register(userName, email, password)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emit(Result.Error(e.message.toString()))
+        }
+    }.flowOn(Dispatchers.IO)
 
     fun getToken(): Flow<String?> = userPreferences.getToken()
 

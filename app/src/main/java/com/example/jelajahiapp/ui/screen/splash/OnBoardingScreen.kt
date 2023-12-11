@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -67,7 +68,7 @@ fun OnBoardingScreen(
         }
 
         Column(modifier = Modifier.fillMaxSize()
-            .weight(0.8f)
+            .weight(1f)
             .background(color = green87)) {
             StartButton(
                 modifier = Modifier.weight(1f),
@@ -189,7 +190,13 @@ fun StartButton(
                     backgroundColor = purple100
                 )
             ) {
-                androidx.compose.material.Text(text = "Start")
+                Text(
+                    text = "Start",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 19.sp,
+                    fontFamily = fonts,
+                    color = Color.White
+                )
             }
         }
     }

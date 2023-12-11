@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.JelajahiApp" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.JelajahiApp" parent="android:Theme.Material.Light.NoActionBar" >
 
+    <item name="android:colorPrimary">@color/green</item>
+    </style>
+
+    >
     <style name="Theme.CustomSplashScreenTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/foto1</item>

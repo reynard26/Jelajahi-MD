@@ -118,4 +118,6 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
+
 }
