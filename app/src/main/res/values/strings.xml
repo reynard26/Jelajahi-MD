@@ -16,6 +16,7 @@
     <string name="show_password">Show password</string>
     <string name="hide_password">Hide password</string>
     <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
     <string name="dismiss">Dismiss</string>
     <string name="getting_started">Begin Your Exploration</string>
     <string name="account_continue">Create an account to continue!</string>

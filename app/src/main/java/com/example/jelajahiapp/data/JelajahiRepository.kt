@@ -1,6 +1,5 @@
 package com.example.jelajahiapp.data
 
-import android.util.Log
 import com.example.jelajahiapp.data.response.ResponseLogin
 import com.example.jelajahiapp.data.response.ResponseUser
 import com.example.jelajahiapp.data.retrofit.ApiService
@@ -21,22 +20,20 @@ class JelajahiRepository(
         return flow {
             emit(Result.Loading)
             try {
-                Log.d("JelajahiRepository", "Attempting login for email: $email")
                 val response = apiService.login(email, password)
                 emit(Result.Success(response))
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("JelajahiRepository", "Login failed: ${e.message}")
                 emit(Result.Error(e.message.toString()))
             }
         }
     }
     suspend fun register(
-        userName: String, email: String, password: String,
+        name: String, email: String, password: String,
     ): Flow<Result<ResponseUser>> = flow {
         emit(Result.Loading)
         try {
-            val response = apiService.register(userName, email, password)
+            val response = apiService.register(name, email, password)
             emit(Result.Success(response))
         } catch (e: Exception) {
             e.printStackTrace()

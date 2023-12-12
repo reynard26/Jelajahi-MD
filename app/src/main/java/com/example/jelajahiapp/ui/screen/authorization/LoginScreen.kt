@@ -3,7 +3,6 @@ package com.example.jelajahiapp.ui.screen.authorization
 import android.content.res.Configuration
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,9 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
@@ -51,6 +47,7 @@ import com.example.jelajahiapp.ui.screen.authorization.viewmodel.UserViewModel
 import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 import com.example.jelajahiapp.ui.theme.black100
 import com.example.jelajahiapp.ui.theme.fonts
+import com.example.jelajahiapp.ui.theme.green40
 import com.example.jelajahiapp.ui.theme.grey40
 import com.example.jelajahiapp.ui.theme.purple100
 import com.example.jelajahiapp.ui.theme.white100
@@ -118,41 +115,6 @@ fun LoginContent(
     val loginState by viewModel.loginState.collectAsState()
     val context = LocalContext.current
 
-    if (isLoginButtonClickedState.value) {
-        when (loginState) {
-            is com.example.jelajahiapp.data.Result.Loading -> {
-                // Loading state UI
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background)
-                        .alpha(0.5f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(16.dp)
-                    )
-                }
-            }
-            is com.example.jelajahiapp.data.Result.Success -> {
-                // Success state UI
-                Log.d("LoginContent", "Login successful")
-                Text(text = "Login: ${(loginState as com.example.jelajahiapp.data.Result.Success)}")
-                // navController.navigate("next_screen_route")
-            }
-            is com.example.jelajahiapp.data.Result.Error -> {
-                Toast.makeText(context, "Login failed: ${(loginState as com.example.jelajahiapp.data.Result.Error).error}", Toast.LENGTH_LONG).show()
-                isLoginButtonClicked = false
-            }
-            else -> {
-                // Handle any other unexpected cases
-                Text(text = "Unexpected login state")
-            }
-        }
-    }
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -207,22 +169,55 @@ fun LoginContent(
                 onClick = { onSubmit() },
                 colors = ButtonDefaults.buttonColors(
                     disabledContentColor = white100,
-                    contentColor = white100,
+                    disabledContainerColor= green40,
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
                 enabled = emailState.isValid && passwordState.isValid
             ) {
-                Text(
-                    color = white100,
-                    fontFamily = fonts,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    text = stringResource(id = R.string.login)
-                )
+                when {
+                    isLoginButtonClickedState.value -> {
+                        when (loginState) {
+                            is com.example.jelajahiapp.data.Result.Loading -> {
+                                // Loading state UI
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .size(30.dp)
+                                        .padding(4.dp),
+                                    color = white100
+                                )
+                            }
+                            is com.example.jelajahiapp.data.Result.Success -> {
+                                // Success state UI
+                                Toast.makeText(context, "${(loginState as com.example.jelajahiapp.data.Result.Success).data.message}", Toast.LENGTH_LONG).show()
+                                isLoginButtonClicked = false
+                            }
+                            is com.example.jelajahiapp.data.Result.Error -> {
+                                // Error state UI
+                                Toast.makeText(context, "Signup failed: ${(loginState as com.example.jelajahiapp.data.Result.Error).error}", Toast.LENGTH_LONG).show()
+                                isLoginButtonClicked = false
+                            }
+                            else -> {}
+                        }
+                    }
+                    else -> {
+                        // Initial state UI
+                        Text(
+                            color = white100,
+                            fontFamily = fonts,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            text = stringResource(id = R.string.login)
+                        )
+                    }
+                }
             }
-        //            Text(
+        }
+    }
+}
+
+//            Text(
 //                text = stringResource(id = R.string.or),
 //                fontFamily = fonts,
 //                fontWeight = FontWeight.Bold,
@@ -240,10 +235,6 @@ fun LoginContent(
 //            ) {
 //                // Handle Google sign-in click
 //            }
-        }
-    }
-}
-
 
 @Preview(name = "Sign in light theme", uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(name = "Sign in dark theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
