@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.jelajahiapp.ui.screen.authorization.LoginScreen
 import com.example.jelajahiapp.ui.screen.authorization.SignupScreen
+import com.example.jelajahiapp.ui.screen.home.HomeScreen
 import com.example.jelajahiapp.ui.screen.splash.OnBoardingScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -30,5 +31,13 @@ fun NavGraph(
         composable(route = Screen.Register.route) {
             SignupScreen(navController = navController)
         }
+
+        composable(route = Screen.Home.route) {
+            HomeScreen(navController = navController)
+        }
+
+//        composable(route = Screen.Register.route) {
+//            AddCommunityScreen(onCommunitySubmited)
+//        }
     }
 }

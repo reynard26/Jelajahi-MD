@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.jelajahiapp.di.Injection
 import com.example.jelajahiapp.ui.screen.authorization.viewmodel.UserViewModel
+import com.example.jelajahiapp.ui.screen.community.viewmodel.CommunityViewModel
 
 
 class ViewModelFactory private constructor(
@@ -15,6 +16,9 @@ class ViewModelFactory private constructor(
         return when {
             modelClass.isAssignableFrom(UserViewModel::class.java) -> {
                 UserViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(CommunityViewModel::class.java) -> {
+                CommunityViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

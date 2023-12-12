@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import org.json.JSONObject
 
 
 class JelajahiRepository(
@@ -16,25 +17,48 @@ class JelajahiRepository(
     suspend fun login(
         email: String,
         password: String,
-    ): Flow<Result<ResponseLogin>> {
+    ): Flow<Result<ResponseLogin?>> {
         return flow {
             emit(Result.Loading)
             try {
                 val response = apiService.login(email, password)
-                emit(Result.Success(response))
+                if (response.isSuccessful) {
+                    emit(Result.Success(response.body()))
+                } else {
+                    val errorMessage = response.errorBody()?.string()
+                    try {
+                        val json = JSONObject(errorMessage)
+                        val message = json.getString("message")
+                        emit(Result.Error(message, errorMessage))
+                    } catch (e: Exception) {
+                        emit(Result.Error("An error occurred", errorMessage))
+                    }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 emit(Result.Error(e.message.toString()))
             }
         }
     }
-    suspend fun register(
+    fun register(
         name: String, email: String, password: String,
-    ): Flow<Result<ResponseUser>> = flow {
+    ): Flow<Result<ResponseUser?>> = flow {
         emit(Result.Loading)
         try {
             val response = apiService.register(name, email, password)
-            emit(Result.Success(response))
+
+            if (response.isSuccessful) {
+                emit(Result.Success(response.body()))
+            } else {
+                val errorMessage = response.errorBody()?.string()
+                try {
+                    val json = JSONObject(errorMessage)
+                    val message = json.getString("message")
+                    emit(Result.Error(message, errorMessage))
+                } catch (e: Exception) {
+                    emit(Result.Error("An error occurred", errorMessage))
+                }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             emit(Result.Error(e.message.toString()))

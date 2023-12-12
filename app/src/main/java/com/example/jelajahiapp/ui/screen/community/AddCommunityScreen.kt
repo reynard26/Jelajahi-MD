@@ -1,6 +1,5 @@
 package com.example.jelajahiapp.ui.screen.community
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,13 +13,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.jelajahiapp.R
-import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
+import com.example.jelajahiapp.data.ViewModelFactory
+import com.example.jelajahiapp.ui.screen.authorization.viewmodel.UserViewModel
 import com.example.jelajahiapp.ui.theme.fonts
 import com.example.jelajahiapp.ui.theme.green40
 import com.example.jelajahiapp.ui.theme.green87
@@ -28,8 +30,16 @@ import com.example.jelajahiapp.ui.theme.white100
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+
 fun AddCommunityScreen(
-    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    viewModel: UserViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
+){
+
+}
+
+@Composable
+fun AddCommunityContent(
     onCommunitySubmited: (placeName: String, location: String, description: String) -> Unit,
 ) {
     val placeNameState = remember { dataCommunityState() }
@@ -80,13 +90,13 @@ fun AddCommunityScreen(
     }
 }
 
-@Preview(name = "Sign in light theme", uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(name = "Sign in dark theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun AddCommunityPreview() {
-    JelajahiAppTheme {
-        AddCommunityScreen(
-            onCommunitySubmited = { _, _, _ -> },
-        )
-    }
-}
+//@Preview(name = "Sign in light theme", uiMode = Configuration.UI_MODE_NIGHT_NO)
+//@Preview(name = "Sign in dark theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
+//@Composable
+//fun AddCommunityPreview() {
+//    JelajahiAppTheme {
+//        AddCommunityScreen(
+//            onCommunitySubmited = { _, _, _ -> },
+//        )
+//    }
+//}

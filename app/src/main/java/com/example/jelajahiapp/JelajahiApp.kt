@@ -18,24 +18,24 @@ import androidx.navigation.navArgument
 import com.example.jelajahiapp.component.BottomBar
 import com.example.jelajahiapp.navigation.Screen
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun JelajahiApp(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
-) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
-    Scaffold(
-        bottomBar = {
-            if (currentRoute != Screen.Detail.route) {
-                BottomBar(navController)
-            }
-        },
-        modifier = modifier
-    ) {
-
-    }
-}
+//@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun JelajahiApp(
+//    modifier: Modifier = Modifier,
+//    navController: NavHostController = rememberNavController(),
+//) {
+//    val navBackStackEntry by navController.currentBackStackEntryAsState()
+//    val currentRoute = navBackStackEntry?.destination?.route
+//
+//    Scaffold(
+//        bottomBar = {
+//            if (currentRoute != Screen.Detail.route) {
+//                BottomBar(navController)
+//            }
+//        },
+//        modifier = modifier
+//    ) {
+//
+//    }
+//}

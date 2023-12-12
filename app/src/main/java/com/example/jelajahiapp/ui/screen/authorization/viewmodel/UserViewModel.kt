@@ -23,7 +23,7 @@ class UserViewModel(private val repository: JelajahiRepository) : ViewModel() {
     fun login(email: String, password: String) {
         viewModelScope.launch {
             repository.login(email, password).collect {
-                _loginState.value = it
+                _loginState.value = it as Result<ResponseLogin>
             }
         }
     }
@@ -31,7 +31,7 @@ class UserViewModel(private val repository: JelajahiRepository) : ViewModel() {
     fun signup(userName :String, email: String, password: String) {
         viewModelScope.launch {
             repository.register(userName, email, password).collect {
-                _defaultState.value = it
+                _defaultState.value = it as Result<ResponseUser>
             }
         }
     }

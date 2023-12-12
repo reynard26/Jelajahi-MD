@@ -1,8 +1,8 @@
 package com.example.jelajahiapp.ui.screen.authorization
 
 import android.content.res.Configuration
-import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,12 +24,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,7 +68,14 @@ fun LoginScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {},
+                title = {
+                    Image(painter = painterResource(id = R.drawable.logo),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(100.dp)
+                            .padding(0.dp,25.dp,0.dp,0.dp)
+                    )
+                },
                 actions = {
                     TextButton(
                         onClick = {
@@ -94,7 +101,9 @@ fun LoginScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            Spacer(modifier = Modifier.height(20.dp))
             LoginContent(
+                navController = navController,
                 onSignInSubmitted = onSignInSubmitted,
                 emailState = emailState,
                 passwordState = passwordState
@@ -105,20 +114,20 @@ fun LoginScreen(
 
 @Composable
 fun LoginContent(
+    navController: NavHostController,
     onSignInSubmitted: (String, String) -> Unit,
     emailState: EmailState,
     passwordState: PasswordState,
     viewModel: UserViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
 ) {
-    var isLoginButtonClicked by remember { mutableStateOf(false) }
-    val isLoginButtonClickedState = rememberUpdatedState(isLoginButtonClicked)
+    var isLoginButtonClickedState by remember { mutableStateOf(false) }
     val loginState by viewModel.loginState.collectAsState()
     val context = LocalContext.current
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp)
+            .padding(18.dp)
     ) {
         Column(
             modifier = Modifier,
@@ -129,7 +138,7 @@ fun LoginContent(
                 fontFamily = fonts,
                 fontWeight = FontWeight.ExtraBold,
                 color = purple100,
-                fontSize = 27.sp
+                fontSize = 26.sp
             )
 
             Text(
@@ -139,7 +148,7 @@ fun LoginContent(
                 fontSize = 15.sp
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             val focusRequester = remember { FocusRequester() }
 
@@ -149,8 +158,7 @@ fun LoginContent(
             Spacer(modifier = Modifier.height(8.dp))
 
             val onSubmit = {
-                isLoginButtonClicked = true
-                Log.d("LoginContent", "Login button clicked")
+                isLoginButtonClickedState = true
                 if (emailState.isValid && passwordState.isValid) {
                     onSignInSubmitted(emailState.text, passwordState.text)
                 }
@@ -177,7 +185,7 @@ fun LoginContent(
                 enabled = emailState.isValid && passwordState.isValid
             ) {
                 when {
-                    isLoginButtonClickedState.value -> {
+                    isLoginButtonClickedState -> {
                         when (loginState) {
                             is com.example.jelajahiapp.data.Result.Loading -> {
                                 // Loading state UI
@@ -191,18 +199,18 @@ fun LoginContent(
                             is com.example.jelajahiapp.data.Result.Success -> {
                                 // Success state UI
                                 Toast.makeText(context, "${(loginState as com.example.jelajahiapp.data.Result.Success).data.message}", Toast.LENGTH_LONG).show()
-                                isLoginButtonClicked = false
+                                isLoginButtonClickedState = false
+                                navController.navigate(Screen.Home.route)
                             }
                             is com.example.jelajahiapp.data.Result.Error -> {
-                                // Error state UI
-                                Toast.makeText(context, "Signup failed: ${(loginState as com.example.jelajahiapp.data.Result.Error).error}", Toast.LENGTH_LONG).show()
-                                isLoginButtonClicked = false
+                                val errorMessage = (loginState as com.example.jelajahiapp.data.Result.Error).error
+                                Toast.makeText(context, "$errorMessage", Toast.LENGTH_LONG).show()
+                                isLoginButtonClickedState = false
                             }
                             else -> {}
                         }
                     }
                     else -> {
-                        // Initial state UI
                         Text(
                             color = white100,
                             fontFamily = fonts,

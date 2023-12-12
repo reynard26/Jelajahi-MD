@@ -55,6 +55,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     JelajahiAppTheme {
-        JelajahiApp()
+//        JelajahiApp()
     }
 }
