@@ -1,6 +1,5 @@
 package com.example.jelajahiapp.component
 
-import com.example.jelajahiapp.ui.theme.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -13,11 +12,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jelajahiapp.R
 import com.example.jelajahiapp.navigation.NavItem
 import com.example.jelajahiapp.navigation.Screen
+import com.example.jelajahiapp.ui.theme.green87
+import com.example.jelajahiapp.ui.theme.purple100
 
 @Composable
 fun BottomBar(
@@ -76,6 +77,7 @@ fun BottomBar(
                     text = item.title,
                     color = if (currentRoute == item.screen.route) Color.White else Color.White // Adjust the title color based on selection
                 ) },
+                alwaysShowLabel = false,
                 selected = currentRoute == item.screen.route,
                 onClick = {
                     navController.navigate(item.screen.route) {

@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.jelajahiapp.di.Injection
 import com.example.jelajahiapp.ui.screen.authorization.viewmodel.UserViewModel
 import com.example.jelajahiapp.ui.screen.community.viewmodel.CommunityViewModel
+import com.example.jelajahiapp.ui.screen.cultural.DetailCulturalViewModel
+import com.example.jelajahiapp.ui.screen.home.HomeViewModel
 
 
 class ViewModelFactory private constructor(
@@ -19,6 +21,12 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(CommunityViewModel::class.java) -> {
                 CommunityViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(DetailCulturalViewModel::class.java) -> {
+                DetailCulturalViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

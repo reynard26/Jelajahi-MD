@@ -32,25 +32,25 @@ import com.example.jelajahiapp.ui.theme.purple100
 
 @Composable
 fun CulturalItem(
-    itemName: String,
+    culturalName: String,
     image: Int,
-    from: String,
+    location: String,
     modifier: Modifier = Modifier,
 ) {
 
     Column(
         modifier = modifier
             .border(BorderStroke(2.dp, color = purple100), shape = Shapes.large)
-            .width(180.dp)
+            .width(165.dp)
             .padding(8.dp), // Ensure the Column takes the full width
         horizontalAlignment = Alignment.Start
     ) {
         Text(
-            text = itemName,
+            text = culturalName,
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.ExtraBold,
             color = purple100,
-            fontSize = 18.sp,
+            fontSize = 16.sp,
             modifier = Modifier
                 .padding(3.dp, 0.dp, 3.dp, 0.dp)
         )
@@ -65,35 +65,36 @@ fun CulturalItem(
             )
 
             Text(
-                text = from,
+                text = location,
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Medium,
                 color = Color.Gray,
-                fontSize = 15.sp
+                fontSize = 13.sp
             )
         }
         Image(
             painter = painterResource(image),
-            contentDescription = itemName,
+            contentDescription = culturalName,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .padding(5.dp, 5.dp, 5.dp, 7.dp)
-                .width(170.dp)
-                .height(110.dp)
+                .width(160.dp)
+                .height(90.dp)
                 .clip(Shapes.large)
         )
 
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun ItemPreview() {
     JelajahiAppTheme {
         CulturalItem(
-            itemName = "Golden Retriever",
+            culturalName = "Golden Retriever",
             image = R.drawable.foto1,
-            from = "Inggris"
+            location = "Inggris"
         )
     }
 }

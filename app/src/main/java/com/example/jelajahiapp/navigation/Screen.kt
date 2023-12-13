@@ -13,7 +13,7 @@ sealed class Screen(val route: String)
     object Register : Screen("register")
     object Profile : Screen("creator profile")
     object Favorite : Screen("favorite")
-    object Detail : Screen("home/{dogId}") {
-        fun createRoute(dogId: Long) = "home/$dogId"
+    object Detail : Screen("home/{culturalId}") {
+        fun createRoute(culturalId: Long) = "home/$culturalId"
     }
 }

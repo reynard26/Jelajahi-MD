@@ -13,14 +13,19 @@ data class ResponseLogin(
     @field:SerializedName("message")
     val message: String? = null,
 
-    @field:SerializedName("token")
-    val token: String? = null
-)
+
+    @field:SerializedName("user")
+    val user: User? = null,
+
+    )
 
 data class User(
 
     @field:SerializedName("userId")
     val userId: String? = null,
+
+    @field:SerializedName("token")
+    val token: String? = null,
 
     @field:SerializedName("name")
     val name: String? = null,
@@ -31,7 +36,5 @@ data class User(
     @field:SerializedName("password")
     val password: String,
 
-    @field:SerializedName("token")
-    val token: String? = null
 
 )

@@ -1,6 +1,8 @@
 package com.example.jelajahiapp.ui.screen.splash
 
 import android.content.Context
+import com.example.jelajahiapp.data.UserPreferences
+import com.example.jelajahiapp.data.dataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +18,9 @@ object InjectionBoarding {
     @Singleton
     fun provideDataStoreRepository(
         @ApplicationContext context: Context
-    ) = OnBoardingRepository(context = context)
+    ): UserPreferences {
+        return UserPreferences(context.dataStore)
+    }
+
 
 }

@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,12 +39,15 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.jelajahiapp.R
+import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
+import com.example.jelajahiapp.data.response.ResponseLogin
 import com.example.jelajahiapp.navigation.Screen
 import com.example.jelajahiapp.ui.screen.authorization.component.Email
 import com.example.jelajahiapp.ui.screen.authorization.component.EmailState
 import com.example.jelajahiapp.ui.screen.authorization.component.Password
 import com.example.jelajahiapp.ui.screen.authorization.viewmodel.UserViewModel
+import com.example.jelajahiapp.ui.screen.home.HomeViewModel
 import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 import com.example.jelajahiapp.ui.theme.black100
 import com.example.jelajahiapp.ui.theme.fonts
@@ -118,112 +122,140 @@ fun LoginContent(
     onSignInSubmitted: (String, String) -> Unit,
     emailState: EmailState,
     passwordState: PasswordState,
+    homeviewModel: HomeViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
     viewModel: UserViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
 ) {
     var isLoginButtonClickedState by remember { mutableStateOf(false) }
     val loginState by viewModel.loginState.collectAsState()
     val context = LocalContext.current
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(18.dp)
-    ) {
-        Column(
-            modifier = Modifier,
+
+    LaunchedEffect(Unit) {
+        homeviewModel.fetchToken()
+    }
+    val tokenState by homeviewModel.tokenFlow.collectAsState()
+    LaunchedEffect(tokenState) {
+        if (tokenState != null && tokenState!!.isNotBlank()) {
+            navController.navigate(Screen.Home.route)
+        }
+    }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(18.dp)
         ) {
-            // Your existing UI code
-            Text(
-                text = stringResource(id = R.string.lets_something),
-                fontFamily = fonts,
-                fontWeight = FontWeight.ExtraBold,
-                color = purple100,
-                fontSize = 26.sp
-            )
-
-            Text(
-                text = stringResource(id = R.string.good_to),
-                fontFamily = fonts,
-                color = grey40,
-                fontSize = 15.sp
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            val focusRequester = remember { FocusRequester() }
-
-            // Use the provided emailState instead of creating a new one
-            Email(emailState, onImeAction = { focusRequester.requestFocus() })
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            val onSubmit = {
-                isLoginButtonClickedState = true
-                if (emailState.isValid && passwordState.isValid) {
-                    onSignInSubmitted(emailState.text, passwordState.text)
-                }
-            }
-
-            Password(
-                label = stringResource(id = R.string.password),
-                passwordState = passwordState,
-                modifier = Modifier.focusRequester(focusRequester),
-                onImeAction = { onSubmit() }
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Button(
-                onClick = { onSubmit() },
-                colors = ButtonDefaults.buttonColors(
-                    disabledContentColor = white100,
-                    disabledContainerColor= green40,
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                enabled = emailState.isValid && passwordState.isValid
+            Column(
+                modifier = Modifier,
             ) {
-                when {
-                    isLoginButtonClickedState -> {
-                        when (loginState) {
-                            is com.example.jelajahiapp.data.Result.Loading -> {
-                                // Loading state UI
-                                CircularProgressIndicator(
-                                    modifier = Modifier
-                                        .size(30.dp)
-                                        .padding(4.dp),
-                                    color = white100
-                                )
-                            }
-                            is com.example.jelajahiapp.data.Result.Success -> {
-                                // Success state UI
-                                Toast.makeText(context, "${(loginState as com.example.jelajahiapp.data.Result.Success).data.message}", Toast.LENGTH_LONG).show()
-                                isLoginButtonClickedState = false
-                                navController.navigate(Screen.Home.route)
-                            }
-                            is com.example.jelajahiapp.data.Result.Error -> {
-                                val errorMessage = (loginState as com.example.jelajahiapp.data.Result.Error).error
-                                Toast.makeText(context, "$errorMessage", Toast.LENGTH_LONG).show()
-                                isLoginButtonClickedState = false
-                            }
-                            else -> {}
-                        }
+                // Your existing UI code
+                Text(
+                    text = stringResource(id = R.string.lets_something),
+                    fontFamily = fonts,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = purple100,
+                    fontSize = 26.sp
+                )
+
+                Text(
+                    text = stringResource(id = R.string.good_to),
+                    fontFamily = fonts,
+                    color = grey40,
+                    fontSize = 15.sp
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                val focusRequester = remember { FocusRequester() }
+
+                // Use the provided emailState instead of creating a new one
+                Email(emailState, onImeAction = { focusRequester.requestFocus() })
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                val onSubmit = {
+                    isLoginButtonClickedState = true
+                    if (emailState.isValid && passwordState.isValid) {
+                        onSignInSubmitted(emailState.text, passwordState.text)
                     }
-                    else -> {
-                        Text(
-                            color = white100,
-                            fontFamily = fonts,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp,
-                            text = stringResource(id = R.string.login)
-                        )
+                }
+
+                Password(
+                    label = stringResource(id = R.string.password),
+                    passwordState = passwordState,
+                    modifier = Modifier.focusRequester(focusRequester),
+                    onImeAction = { onSubmit() }
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Button(
+                    onClick = { onSubmit() },
+                    colors = ButtonDefaults.buttonColors(
+                        disabledContentColor = white100,
+                        disabledContainerColor = green40,
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    enabled = emailState.isValid && passwordState.isValid
+                ) {
+                    when {
+                        isLoginButtonClickedState -> {
+                            when (loginState) {
+                                is Result.Loading -> {
+                                    // Loading state UI
+                                    CircularProgressIndicator(
+                                        modifier = Modifier
+                                            .size(30.dp)
+                                            .padding(4.dp),
+                                        color = white100
+                                    )
+                                }
+
+                                is Result.Success -> {
+                                    val data = (loginState as? Result.Success<ResponseLogin>)?.data
+                                    data?.let {
+                                        val token = data.loginResult?.token
+                                        val userId = data.loginResult?.userId
+                                        if (!token.isNullOrBlank() && userId != null) {
+                                            Toast.makeText(
+                                                context,
+                                                "${data.message}",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            isLoginButtonClickedState = false
+                                            navController.navigate(Screen.Home.route)
+                                            viewModel.saveToken(token, userId)
+                                        } else {
+                                        }
+                                    }
+                                }
+
+                                is Result.Error -> {
+                                    val errorMessage = (loginState as Result.Error).error
+                                    Toast.makeText(context, "$errorMessage", Toast.LENGTH_LONG)
+                                        .show()
+                                    isLoginButtonClickedState = false
+                                }
+
+                                else -> {}
+                            }
+                        }
+
+                        else -> {
+                            Text(
+                                color = white100,
+                                fontFamily = fonts,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
+                                text = stringResource(id = R.string.login)
+                            )
+                        }
                     }
                 }
             }
         }
     }
-}
 
 //            Text(
 //                text = stringResource(id = R.string.or),

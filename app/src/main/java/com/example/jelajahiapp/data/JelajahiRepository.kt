@@ -3,9 +3,12 @@ package com.example.jelajahiapp.data
 import com.example.jelajahiapp.data.response.ResponseLogin
 import com.example.jelajahiapp.data.response.ResponseUser
 import com.example.jelajahiapp.data.retrofit.ApiService
+import com.example.jelajahiapp.data.room.Cultural
+import com.example.jelajahiapp.data.room.FakeCulturalDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import org.json.JSONObject
 
@@ -27,7 +30,7 @@ class JelajahiRepository(
                 } else {
                     val errorMessage = response.errorBody()?.string()
                     try {
-                        val json = JSONObject(errorMessage)
+                        val json = JSONObject(errorMessage.toString())
                         val message = json.getString("message")
                         emit(Result.Error(message, errorMessage))
                     } catch (e: Exception) {
@@ -69,6 +72,36 @@ class JelajahiRepository(
 
     suspend fun saveToken(token: String, userId: String) {
         userPreferences.saveUserToken(token, userId)
+    }
+
+    //LOCAL FOR CULTURAL
+    private val listCultural = mutableListOf<Cultural>()
+
+    init {
+        if (listCultural.isEmpty()) {
+            FakeCulturalDataSource.dummyCultural.forEach { cultural ->
+                listCultural.add(
+                    Cultural(
+                        id = cultural.id,
+                        image = cultural.image,
+                        culturalName = cultural.culturalName,
+                        culturalType = cultural.culturalType,
+                        location = cultural.location,
+                        description = cultural.description,
+                    )
+                )
+            }
+        }
+    }
+
+    fun getallCultural(): Flow<List<Cultural>> {
+        return flowOf(listCultural)
+    }
+
+    fun getCulturaById(culturalId: Long): Cultural {
+        return listCultural.first { cultural ->
+            cultural.id == culturalId
+        }
     }
     suspend fun logout() {
         userPreferences.logout()

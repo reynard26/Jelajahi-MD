@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">JelajahiApp</string>
+    <string name="app_name">JelajahI</string>
     <string name="home">Home</string>
     <string name="menu_home">Home Menu</string>
     <string name="explore">Explore</string>
@@ -21,8 +21,10 @@
     <string name="getting_started">Begin Your Exploration</string>
     <string name="account_continue">Create an account to continue!</string>
     <string name="lets_something">Let The Exploration Begin</string>
+    <string name="home_text">Find Cultural Travel Destination with Us!</string>
     <string name="good_to">Good to see you again, Penjelajah!</string>
     <string name="or">OR</string>
+    <string name="description">Description</string>
     <string name="sign_in_google">Sign in with Google</string>
     <string name="loading_in_google">Loading Sign in with Google</string>
     <string name="sign_up_google">Sign up with Google</string>
