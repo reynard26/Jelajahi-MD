@@ -54,7 +54,7 @@ fun BottomBar(
             NavItem(
                 title = stringResource(R.string.community),
                 icon = R.drawable.baseline_comment_24,
-                screen = Screen.Profile,
+                screen = Screen.AddCommunity,
                 contentDescription = stringResource(R.string.menu_community)
             ),
             NavItem(

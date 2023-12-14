@@ -54,6 +54,10 @@ fun NavGraph(
             }
         }
 
+        composable(route = Screen.AddCommunity.route) {
+//            CommunityScreen(navController = navController)
+        }
+
 //        composable(route = Screen.Register.route) {
 //            AddCommunityScreen(onCommunitySubmited)
 //        }

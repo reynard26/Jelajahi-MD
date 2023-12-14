@@ -1,6 +1,8 @@
 package com.example.jelajahiapp.ui.screen.community.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.example.jelajahiapp.data.JelajahiRepository
 import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.response.ResponseUser
@@ -15,6 +17,9 @@ class CommunityViewModel(private val repository: JelajahiRepository) : ViewModel
     private val _defaultState = MutableStateFlow<Result<ResponseUser>>(Result.Loading)
     val defaultState: StateFlow<Result<ResponseUser>> get() = _defaultState
 
+    fun getToken(): LiveData<String?> = repository.getToken().asLiveData()
+
+    fun getId(): LiveData<String?> = repository.getId().asLiveData()
 
     fun addCommunity(
         token: String,

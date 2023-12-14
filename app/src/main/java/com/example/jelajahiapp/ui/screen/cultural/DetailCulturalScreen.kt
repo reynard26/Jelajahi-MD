@@ -1,5 +1,6 @@
 package com.example.jelajahiapp.ui.screen.cultural
 
+import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +40,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jelajahiapp.R
 import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
+import com.example.jelajahiapp.ui.screen.community.AddCommunityActivity
 import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 import com.example.jelajahiapp.ui.theme.Shapes
 import com.example.jelajahiapp.ui.theme.fonts
@@ -87,6 +90,7 @@ fun DetailContent(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -191,7 +195,9 @@ fun DetailContent(
                             .padding(0.dp, 2.dp, 0.dp, 10.dp)
 
                     )
+                    }
                 }
+                Button(onClick = { context.startActivity(Intent(context, AddCommunityActivity::class.java))}) {
                 }
             }
         }

@@ -51,9 +51,9 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
         }
     }
 
-    fun getTokens(): Flow<String> {
+    fun getId(): Flow<String> {
         return dataStore.data.map { preferences ->
-            preferences[TOKEN_KEY] ?: ""
+            preferences[USER_ID] ?: ""
         }
     }
 

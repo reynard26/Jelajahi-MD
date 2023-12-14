@@ -69,6 +69,7 @@ class JelajahiRepository(
     }.flowOn(Dispatchers.IO)
 
     fun getToken(): Flow<String?> = userPreferences.getToken()
+    fun getId(): Flow<String?> = userPreferences.getId()
 
     suspend fun saveToken(token: String, userId: String) {
         userPreferences.saveUserToken(token, userId)
