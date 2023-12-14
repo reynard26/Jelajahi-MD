@@ -1,7 +1,6 @@
 package com.example.jelajahiapp.ui.screen.community
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -11,15 +10,13 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.jelajahiapp.R
-import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
 import com.example.jelajahiapp.databinding.ActivityAddCommunityBinding
 import com.example.jelajahiapp.ui.screen.community.viewmodel.CommunityViewModel
-import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -33,10 +30,34 @@ class AddCommunityActivity : AppCompatActivity() {
     private val viewModel by viewModels<CommunityViewModel> {
         ViewModelFactory.getInstance(this)
     }
+
+    private val KEY_CURRENT_IMAGE_URI = "current_image_uri"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddCommunityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if(!allPermissionsGranted()){
+            requestPermissionLauncher.launch(REQUIRED_PERMISSION)
+        }
+
+        binding.tvAddPhoto.setOnClickListener {
+            val alertDialog: AlertDialog? = this.let {  // Change requireActivity() to this
+                val builder = AlertDialog.Builder(it)
+                builder.apply {
+                    setPositiveButton("Image") { dialog, id -> startGallery() }
+                    setNegativeButton("Camera") { dialog, id -> startCamera() }
+                }
+                builder.create()
+            }
+            alertDialog?.show()
+        }
+
+        if (savedInstanceState != null) {
+            // Restore the currentImageUri if available
+            currentImageUri = savedInstanceState.getParcelable(KEY_CURRENT_IMAGE_URI)
+            showImage()
+        }
 
     }
 
@@ -81,8 +102,8 @@ class AddCommunityActivity : AppCompatActivity() {
                     imageFile.name,
                     requestImageFile
                 )
-                viewModel.addStory(token, imageMultipart, description)
-                informationProvider()
+//                viewModel.addStory(token, imageMultipart, description)
+//                informationProvider()
                 finishAffinity()
             }
         }
@@ -140,23 +161,13 @@ class AddCommunityActivity : AppCompatActivity() {
         }
     }
 
-    private fun informationProvider() {
-        viewModel.apply {
-            Result.Loading.observe(this@AddStoryActivity) { isLoading ->
-                binding.PGADD.isVisible == isLoading
-            }
-
-            Result.Error.observe(this@AddStoryActivity) { isError ->
-                if (isError) {
-                    showToast(getString(R.string.eror_load_story))
-                }
-            }
-
-            Result.Success.observe(this@AddStoryActivity) { message ->
-                message.message?.let { showToast(it) }
-            }
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Save the currentImageUri in the bundle
+        outState.putParcelable(KEY_CURRENT_IMAGE_URI, currentImageUri)
     }
+
+
     companion object {
         private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
     }

@@ -36,4 +36,6 @@
     <string name="permission_yes">Permission request granted</string>
     <string name="permission_no">Permission request denied</string>
     <string name="add_image">Please add the image, there is no image</string>
+    <string name="photo">Photo</string>
+    <string name="scroll_to_top">Scroll to Top</string>
 </resources>

@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.jelajahiapp.ui.screen.authorization.LoginScreen
 import com.example.jelajahiapp.ui.screen.authorization.SignupScreen
+import com.example.jelajahiapp.ui.screen.cultural.CulturalScreen
 import com.example.jelajahiapp.ui.screen.cultural.DetailCulturalScreen
 import com.example.jelajahiapp.ui.screen.home.HomeScreen
 import com.example.jelajahiapp.ui.screen.splash.OnBoardingScreen
@@ -52,6 +53,11 @@ fun NavGraph(
             ) {
                 navController.navigateUp()
             }
+        }
+
+        composable(route = Screen.Cultural.route) {
+            CulturalScreen(navController = navController, navigateToDetail = { culturalID ->
+                navController.navigate(Screen.Detail.createRoute(culturalID)) }, navigateBack = { navController.navigateUp() })
         }
 
         composable(route = Screen.AddCommunity.route) {
