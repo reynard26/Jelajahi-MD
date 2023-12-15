@@ -25,3 +25,5 @@ val grey40 = Color(0xff646161)
 val grey10 = Color(0xffe8e8e8)
 
 val white10 = Color(0xADFFFFFF)
+
+val white30 = Color(0xCCFFFFFF)

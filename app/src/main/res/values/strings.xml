@@ -38,4 +38,11 @@
     <string name="add_image">Please add the image, there is no image</string>
     <string name="photo">Photo</string>
     <string name="scroll_to_top">Scroll to Top</string>
+    <string name="route">Route</string>
+    <string name="travel_references">Have you got any travel references?</string>
+    <string name="capture_your">Capture your Indonesian cultural moments now, and let us suggest destinations personalized for you!</string>
+    <string name="capture_image">Capture Image</string>
+    <string name="cultural">Cultural Encyclopedia</string>
+    <string name="see_all">See All</string>
+    <string name="popular">Popular Destinations</string>
 </resources>

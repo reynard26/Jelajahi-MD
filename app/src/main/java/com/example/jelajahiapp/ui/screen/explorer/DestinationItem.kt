@@ -1,11 +1,10 @@
-package com.example.jelajahiapp.ui.screen.home
+package com.example.jelajahiapp.ui.screen.explorer
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,7 +29,6 @@ import com.example.jelajahiapp.R
 import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 import com.example.jelajahiapp.ui.theme.Shapes
 import com.example.jelajahiapp.ui.theme.green87
-import com.example.jelajahiapp.ui.theme.grey40
 import com.example.jelajahiapp.ui.theme.purple100
 
 @Composable

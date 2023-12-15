@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -57,6 +58,7 @@ import com.example.jelajahiapp.data.ViewModelFactory
 import com.example.jelajahiapp.data.room.Cultural
 import com.example.jelajahiapp.navigation.Screen
 import com.example.jelajahiapp.ui.screen.community.AddCommunityScreen
+import com.example.jelajahiapp.ui.screen.community.HomeCommunityItem
 import com.example.jelajahiapp.ui.screen.cultural.CulturalItem
 import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 import com.example.jelajahiapp.ui.theme.Shapes
@@ -113,61 +115,93 @@ fun HomeScreen(
             viewModel.fetchToken()
         }
         val token by viewModel.tokenFlow.collectAsState()
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(15.dp)
         ) {
-            Spacer(modifier = Modifier.height(70.dp))
-            Text(
-                text = stringResource(id = R.string.home_text),
-                fontFamily = fonts,
-                fontWeight = FontWeight.ExtraBold,
-                color = purple100,
-                fontSize = 30.sp,
-                lineHeight = 30.sp
-            )
+            item{Spacer(modifier = Modifier.height(70.dp))
+                Text(
+                    text = stringResource(id = R.string.home_text),
+                    fontFamily = fonts,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = purple100,
+                    fontSize = 30.sp,
+                    lineHeight = 30.sp
+                )
 
-            Box(modifier = modifier
-                .background(color = purple100, shape = Shapes.medium)){
-                Column (modifier = modifier
-                    .padding(10.dp)) {
-                    Text(text = "Have you got any travel references?", fontFamily = fonts, fontWeight = FontWeight.Bold, color = white100, fontSize = 16.sp)
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Text(text = "Capture your Indonesian cultural moments now, and let us suggest destinations personalized for you!", fontFamily = fonts, color = white100, fontSize = 12.sp)
-                    Button(onClick = { /*TODO*/ },
-                        colors = ButtonDefaults.buttonColors(Color.White)) {
-                        Text(text = "Capture Image", color = black100)
+                Box(modifier = modifier
+                    .background(color = purple100, shape = Shapes.medium)
+                    .fillMaxWidth()){
+                    Column (modifier = modifier
+                        .padding(10.dp)) {
+                        Text(text = stringResource(id = R.string.travel_references), fontFamily = fonts, fontWeight = FontWeight.Bold, color = white100, fontSize = 16.sp)
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(text = stringResource(id = R.string.capture_your), fontFamily = fonts, color = white100, fontSize = 12.sp)
+                        Button(onClick = { /*TODO*/ },
+                            colors = ButtonDefaults.buttonColors(Color.White)) {
+                            Text(text = stringResource(id = R.string.capture_image), color = purple100)
+                        }
                     }
                 }
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            Row(modifier = modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "Cultural Encyclopedia", fontFamily = fonts, fontWeight = FontWeight.Bold, color = green87, fontSize = 22.sp)
-                Text(text = "See All", fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier.padding(0.dp,5.dp,0.dp,0.dp).clickable { navController.navigate(Screen.Cultural.route) })
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            viewModel.uiState.collectAsState(initial = Result.Loading).value.let { uiState ->
-                when (uiState) {
-                    is Result.Loading -> {
-                        viewModel.getAllCultural()
-                    }
+                viewModel.uiState.collectAsState(initial = Result.Loading).value.let { uiState ->
+                    when (uiState) {
+                        is Result.Loading -> {
+                            viewModel.getAllCultural()
+                        }
 
-                    is Result.Success -> {
-                        HomeContent(
-                            listCultural = uiState.data, // Access the data using getOrThrow()
-                            navigateToDetail = navigateToDetail,
-                            modifier = modifier
-                        )
-                    }
+                        is Result.Success -> {
+                            Spacer(modifier = Modifier.height(20.dp))
+                            Row(modifier = modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween) {
+                                Text(stringResource(id = R.string.popular), fontFamily = fonts, fontWeight = FontWeight.Bold, color = green87, fontSize = 22.sp)
+                                Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier.padding(0.dp,5.dp,0.dp,0.dp).clickable { })
+                            }
+                            Spacer(modifier = Modifier.height(12.dp))
+                            HomeDestinationContent(
+                                listCultural = uiState.data, // Access the data using getOrThrow()
+                                navigateToDetail = navigateToDetail,
+                                modifier = modifier
+                            )
+                        }
 
-                    is Result.Error -> {
-                        // Handle error case
-                    }
+                        is Result.Error -> {
+                            // Handle error case
+                        }
 
-                    else -> {}
+                        else -> {}
+                    }
                 }
+                viewModel.uiState.collectAsState(initial = Result.Loading).value.let { uiState ->
+                    when (uiState) {
+                        is Result.Loading -> {
+                            viewModel.getAllCultural()
+                        }
+
+                        is Result.Success -> {
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Row(modifier = modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween) {
+                                Text(stringResource(id = R.string.cultural), fontFamily = fonts, fontWeight = FontWeight.Bold, color = green87, fontSize = 22.sp)
+                                Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier.padding(0.dp,5.dp,0.dp,0.dp).clickable { navController.navigate(Screen.Cultural.route) })
+                            }
+                            Spacer(modifier = Modifier.height(12.dp))
+                            HomeContent(
+                                listCultural = uiState.data, // Access the data using getOrThrow()
+                                navigateToDetail = navigateToDetail,
+                                modifier = modifier
+                            )
+                        }
+
+                        is Result.Error -> {
+                            // Handle error case
+                        }
+
+                        else -> {}
+                    }
+                }
+                HomeCommunityContent(modifier = modifier.fillMaxWidth())
+                Spacer(modifier = Modifier.height(70.dp))
             }
         }
     }
@@ -209,6 +243,71 @@ fun HomeContent(
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun HomeDestinationContent(
+    listCultural: List<Cultural>,
+    navigateToDetail: (Long) -> Unit,
+    modifier: Modifier
+) {
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+
+    val showButton: Boolean by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 0 }
+    }
+
+    Box(modifier = modifier) {
+        Row {
+            LazyRow(
+                state = listState,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = modifier
+                    .testTag("CulturalList")
+            ) {
+                items(listCultural, key = { it.id }) { culturalItem ->
+                    HomeDestinationItem(
+                        placeName = culturalItem.culturalName,
+                        image = culturalItem.image,
+                        address = culturalItem.location.truncate(14),
+                        modifier = Modifier
+                            .clickable {
+                                navigateToDetail(culturalItem.id)
+                            }
+                            .animateItemPlacement(tween(durationMillis = 500))
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun HomeCommunityContent(
+    modifier: Modifier
+) {
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+
+    Box(modifier = modifier) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .testTag("CulturalList")
+            ) {
+                    HomeCommunityItem(
+                        placeName = "Batik Rakyat Magelang",
+                        image = R.drawable.lasem,
+                        description = stringResource(R.string.capture_your).truncate(230),
+                        modifier = Modifier
+                    )
+            }
     }
 }
 
