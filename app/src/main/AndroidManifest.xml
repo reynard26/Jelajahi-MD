@@ -9,6 +9,8 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <application
         android:name=".JelajahiApplication"
@@ -19,15 +21,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomSplashScreenTheme"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.screen.recommendation.RecommendationActivity"
+            android:theme="@style/Theme.JelajahiApp"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDel_eBENWQVVSmHU5AIIjEO--cQYDHWkg" />
+            android:value="AIzaSyDikJA_zqvlFv4heu7UnWMht7j1JOTpiN8" />
 
         <activity
             android:name=".ui.screen.community.AddCommunityActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/Theme.JelajahiApp"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.JelajahiApp" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

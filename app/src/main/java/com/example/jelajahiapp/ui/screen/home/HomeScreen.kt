@@ -1,7 +1,6 @@
 package com.example.jelajahiapp.ui.screen.home
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -45,7 +44,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -57,12 +55,9 @@ import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
 import com.example.jelajahiapp.data.room.Cultural
 import com.example.jelajahiapp.navigation.Screen
-import com.example.jelajahiapp.ui.screen.community.AddCommunityScreen
 import com.example.jelajahiapp.ui.screen.community.HomeCommunityItem
 import com.example.jelajahiapp.ui.screen.cultural.CulturalItem
-import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 import com.example.jelajahiapp.ui.theme.Shapes
-import com.example.jelajahiapp.ui.theme.black100
 import com.example.jelajahiapp.ui.theme.fonts
 import com.example.jelajahiapp.ui.theme.green87
 import com.example.jelajahiapp.ui.theme.purple100
@@ -200,6 +195,13 @@ fun HomeScreen(
                         else -> {}
                     }
                 }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(stringResource(id = R.string.community_stories), fontFamily = fonts, fontWeight = FontWeight.Bold, color = green87, fontSize = 22.sp)
+                    Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier.padding(0.dp,5.dp,0.dp,0.dp).clickable { navController.navigate(Screen.Cultural.route) })
+                }
+                Spacer(modifier = Modifier.height(10.dp))
                 HomeCommunityContent(modifier = modifier.fillMaxWidth())
                 Spacer(modifier = Modifier.height(70.dp))
             }

@@ -5,4 +5,5 @@ data class NavItem(
     val icon: Int,
     val screen: Screen,
     val contentDescription: String,
+    val onClick: (() -> Unit)? = null
 )

@@ -42,7 +42,12 @@
     <string name="travel_references">Have you got any travel references?</string>
     <string name="capture_your">Capture your Indonesian cultural moments now, and let us suggest destinations personalized for you!</string>
     <string name="capture_image">Capture Image</string>
+    <string name="failed_capture_image">Capture Image</string>
     <string name="cultural">Cultural Encyclopedia</string>
     <string name="see_all">See All</string>
     <string name="popular">Popular Destinations</string>
+    <string name="community_stories">Community Stories</string>
+    <string name="failed_camera">Failed Open Camera</string>
+    <string name="take_picture">Take a Picture</string>
+    <string name="switch_camera">Switch Camera</string>
 </resources>

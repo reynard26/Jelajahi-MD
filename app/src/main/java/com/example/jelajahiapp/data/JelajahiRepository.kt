@@ -1,5 +1,6 @@
 package com.example.jelajahiapp.data
 
+import android.util.Log
 import com.example.jelajahiapp.data.response.ResponseLogin
 import com.example.jelajahiapp.data.response.ResponseUser
 import com.example.jelajahiapp.data.retrofit.ApiService
@@ -24,7 +25,12 @@ class JelajahiRepository(
         return flow {
             emit(Result.Loading)
             try {
+                Log.d("dataapa aja2",email)
+                Log.d("dataapa aja2",password)
                 val response = apiService.login(email, password)
+                Log.d("dataapa aja",response.toString())
+                Log.d("dataapa aja",email)
+                Log.d("dataapa aja",password)
                 if (response.isSuccessful) {
                     emit(Result.Success(response.body()))
                 } else {

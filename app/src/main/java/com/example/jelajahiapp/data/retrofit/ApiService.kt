@@ -23,4 +23,11 @@ interface ApiService {
         @Field("password") password: String,
     ): Response<ResponseLogin>
 
+
+    @FormUrlEncoded
+    @POST("getData")
+    suspend fun getData(
+        @Field("email") email: String,
+    ): Response<ResponseLogin>
+
 }

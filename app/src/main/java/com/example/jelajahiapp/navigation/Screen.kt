@@ -10,6 +10,8 @@ sealed class Screen(val route: String)
 
     object AddCommunity : Screen("addcommunity")
 
+    object RecommendationActivity : Screen("recommendationActivity")
+
     object Cultural : Screen("cultural")
 
     object Register : Screen("register")

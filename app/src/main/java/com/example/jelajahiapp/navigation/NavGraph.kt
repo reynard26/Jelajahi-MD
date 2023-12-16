@@ -2,6 +2,7 @@ package com.example.jelajahiapp.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,6 +13,7 @@ import com.example.jelajahiapp.ui.screen.authorization.SignupScreen
 import com.example.jelajahiapp.ui.screen.cultural.CulturalScreen
 import com.example.jelajahiapp.ui.screen.cultural.DetailCulturalScreen
 import com.example.jelajahiapp.ui.screen.home.HomeScreen
+import com.example.jelajahiapp.ui.screen.recommendation.RecommendationActivity
 import com.example.jelajahiapp.ui.screen.splash.OnBoardingScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -22,6 +24,7 @@ fun NavGraph(
     navController: NavHostController,
     startDestination: String
 ) {
+    val context = LocalContext.current
     NavHost(
         navController = navController,
         startDestination = startDestination
@@ -41,6 +44,10 @@ fun NavGraph(
                 navigateToDetail = { culturalID ->
                     navController.navigate(Screen.Detail.createRoute(culturalID))
                 })
+        }
+
+        composable(route = Screen.RecommendationActivity.route) {
+           RecommendationActivity()
         }
 
         composable(

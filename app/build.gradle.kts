@@ -4,6 +4,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -132,5 +133,9 @@ dependencies {
     implementation ("androidx.camera:camera-view:${camerax_version}")
     implementation("androidx.camera:camera-core:$camerax_version")
     implementation("androidx.camera:camera-extensions:$camerax_version")
+
+
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.20"))
+    implementation ("com.google.android.libraries.places:places:3.3.0")
 
 }

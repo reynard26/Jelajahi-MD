@@ -13,7 +13,6 @@ data class ResponseLogin(
     @field:SerializedName("message")
     val message: String? = null,
 
-
     @field:SerializedName("user")
     val user: User? = null,
 

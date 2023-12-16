@@ -1,5 +1,6 @@
 package com.example.jelajahiapp.component
 
+import android.content.Intent
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -17,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jelajahiapp.R
 import com.example.jelajahiapp.navigation.NavItem
 import com.example.jelajahiapp.navigation.Screen
+import com.example.jelajahiapp.ui.screen.recommendation.RecommendationActivity
 import com.example.jelajahiapp.ui.theme.green87
 import com.example.jelajahiapp.ui.theme.purple100
 
@@ -25,6 +28,7 @@ fun BottomBar(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     NavigationBar(
         modifier = modifier,
         containerColor = green87
@@ -48,8 +52,11 @@ fun BottomBar(
             NavItem(
                 title = stringResource(R.string.camera),
                 icon = R.drawable.baseline_photo_camera_24,
-                screen = Screen.Profile,
-                contentDescription = stringResource(R.string.menu_camera)
+                screen = Screen.RecommendationActivity,
+                contentDescription = stringResource(R.string.menu_camera),
+                onClick = {
+                    context.startActivity(Intent(context, RecommendationActivity::class.java))
+                }
             ),
             NavItem(
                 title = stringResource(R.string.community),
@@ -80,6 +87,7 @@ fun BottomBar(
                 alwaysShowLabel = false,
                 selected = currentRoute == item.screen.route,
                 onClick = {
+                    item.onClick?.invoke() // Invoke the custom onClick action
                     navController.navigate(item.screen.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
