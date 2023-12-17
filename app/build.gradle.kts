@@ -83,7 +83,6 @@ dependencies {
     implementation ("io.coil-kt:coil-compose:1.3.2")
 
     implementation ("androidx.compose.runtime:runtime-livedata:1.3.3")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0")
 
     //testing
     testImplementation ("junit:junit:4.13.2")
@@ -141,5 +140,7 @@ dependencies {
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.20"))
     implementation ("com.google.android.libraries.places:places:3.3.0")
+
+    implementation ("androidx.compose.runtime:runtime-rxjava2:1.0.5")
 
 }

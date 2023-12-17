@@ -2,7 +2,6 @@ package com.example.jelajahiapp.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -25,7 +24,6 @@ fun NavGraph(
     navController: NavHostController,
     startDestination: String
 ) {
-    val context = LocalContext.current
     NavHost(
         navController = navController,
         startDestination = startDestination
@@ -73,7 +71,7 @@ fun NavGraph(
         }
 
         composable(route = Screen.Explorer.route) {
-            ExplorerScreen()
+            ExplorerScreen(navController = navController)
         }
 
 //        composable(route = Screen.Register.route) {

@@ -53,4 +53,9 @@
     <string name="account_created">Account Created</string>
     <string name="register">Register</string>
     <string name="destination_recommendation">Destination Recommendations</string>
+    <string name="explorer">Explorer</string>
+    <string name="explorer_indonesian">Explore Indonesian Cultural Heritages</string>
+    <string name="discover_indonesiaan">Discover Indonesian Cultural Destinations</string>
+    <string name="clear">clear</string>
+    <string name="search_location">Search Location</string>
 </resources>
