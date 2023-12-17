@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -62,7 +63,7 @@ import com.example.jelajahiapp.ui.theme.green87
 import com.example.jelajahiapp.ui.theme.purple100
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
 @Composable
 fun ExplorerScreen(
     modifier: Modifier = Modifier,
@@ -79,6 +80,11 @@ fun ExplorerScreen(
     val isLoading by viewModel.isLoading.collectAsState()
 
     val lastItemPosition = remember { mutableStateOf(0) }
+
+    DisposableEffect(Unit) {
+        viewModel.getExplore() // Load the first location
+        onDispose { }
+    }
 
     LaunchedEffect(lastItemPosition.value) {
         if (lastItemPosition.value != 0) {
@@ -112,19 +118,19 @@ fun ExplorerScreen(
                     query = searchText,
                     onQueryChange = {
                         searchText = it
-                        viewModel.filterLocations(it)
+                        viewModel.updateSearchQuery(it)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
                 )
 
-                if (isLoading) {
+                if (viewModel.isLoading.value) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 }
 
-                LocationList(locations = filteredLocations, onLastItemLaidOut = { index ->
-                    if (index == filteredLocations.size - 1) {
+                LocationList(locations = viewModel.filteredLocations.value, onLastItemLaidOut = { index ->
+                    if (index == viewModel.filteredLocations.value.size - 1) {
                         lastItemPosition.value = index
                     }
                 })
