@@ -112,7 +112,7 @@ fun ExplorerScreen(
                     query = searchText,
                     onQueryChange = {
                         searchText = it
-                        viewModel.updateSearchQuery(it)
+                        viewModel.filterLocations(it)
                     },
                     modifier = Modifier
                         .fillMaxWidth()

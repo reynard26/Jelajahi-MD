@@ -68,21 +68,15 @@ class ExplorerViewModel(private val repository: JelajahiRepository) : ViewModel(
     }
 
     fun filterLocations(query: String) {
-        val locations = _responseLocation.value?.body()?.results ?: emptyList()
+        val locations = _filteredLocations.value
 
         val filteredList = if (query.isNotBlank()) {
-            val filteredLocations = locations.filter { it.name.contains(query, ignoreCase = true) }
-            _filteredLocations.value = filteredLocations.distinctBy { it.placeId }
-            filteredLocations
+            locations.filter { it.name.contains(query, ignoreCase = true) }
         } else {
-            _filteredLocations.value = locations.distinctBy { it.placeId }
             locations
         }
-    }
 
-    fun updateSearchQuery(query: String) {
-        _searchQuery.value = query
-        filterLocations(query)
+        _filteredLocations.value = filteredList
     }
 
     companion object {
