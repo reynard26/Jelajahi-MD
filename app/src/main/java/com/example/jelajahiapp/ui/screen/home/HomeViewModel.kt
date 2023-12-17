@@ -44,4 +44,11 @@ class HomeViewModel(private val repository: JelajahiRepository) : ViewModel() {
         }
     }
 
+    fun setLogout(onLogoutSuccess: () -> Unit) {
+        viewModelScope.launch {
+            repository.logout()
+            onLogoutSuccess.invoke()
+        }
+    }
+
 }

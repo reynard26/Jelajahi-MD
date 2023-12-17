@@ -12,6 +12,7 @@ import com.example.jelajahiapp.ui.screen.authorization.LoginScreen
 import com.example.jelajahiapp.ui.screen.authorization.SignupScreen
 import com.example.jelajahiapp.ui.screen.cultural.CulturalScreen
 import com.example.jelajahiapp.ui.screen.cultural.DetailCulturalScreen
+import com.example.jelajahiapp.ui.screen.explorer.ExplorerScreen
 import com.example.jelajahiapp.ui.screen.home.HomeScreen
 import com.example.jelajahiapp.ui.screen.recommendation.RecommendationActivity
 import com.example.jelajahiapp.ui.screen.splash.OnBoardingScreen
@@ -69,6 +70,10 @@ fun NavGraph(
 
         composable(route = Screen.AddCommunity.route) {
 //            CommunityScreen(navController = navController)
+        }
+
+        composable(route = Screen.Explorer.route) {
+            ExplorerScreen()
         }
 
 //        composable(route = Screen.Register.route) {

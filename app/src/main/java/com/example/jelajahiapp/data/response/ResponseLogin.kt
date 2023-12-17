@@ -10,7 +10,7 @@ data class ResponseLogin(
     @field:SerializedName("error")
     val error: Boolean? = null,
 
-    @field:SerializedName("message")
+    @field:SerializedName("msg")
     val message: String? = null,
 
     @field:SerializedName("user")
@@ -23,7 +23,7 @@ data class User(
     @field:SerializedName("userId")
     val userId: String? = null,
 
-    @field:SerializedName("token")
+    @field:SerializedName("accessToken")
     val token: String? = null,
 
     @field:SerializedName("name")

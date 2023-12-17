@@ -19,7 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"https://story-api.dicoding.dev/v1/\"")
+        buildConfigField("String", "BASE_URL", "\"https://ch2-ps431-jelajahi-production.up.railway.app/\"")
 
         vectorDrawables {
             useSupportLibrary = true
@@ -80,6 +80,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("androidx.compose.material:material-icons-extended:1.5.4")
+
+    implementation ("androidx.compose.runtime:runtime-livedata:1.3.3")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0")
 
     //testing
     testImplementation ("junit:junit:4.13.2")

@@ -50,4 +50,7 @@
     <string name="failed_camera">Failed Open Camera</string>
     <string name="take_picture">Take a Picture</string>
     <string name="switch_camera">Switch Camera</string>
+    <string name="account_created">Account Created</string>
+    <string name="register">Register</string>
+    <string name="destination_recommendation">Destination Recommendations</string>
 </resources>

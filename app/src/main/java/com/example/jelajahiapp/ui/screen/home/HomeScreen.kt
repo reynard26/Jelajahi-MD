@@ -20,10 +20,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,12 +33,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -74,6 +78,7 @@ fun HomeScreen(
     ),
     navigateToDetail: (Long) -> Unit
 ) {
+    var showMenu by remember { mutableStateOf(false) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -94,22 +99,31 @@ fun HomeScreen(
                     )
                 },
                 actions = {
-                    IconButton(
-                        onClick = {
-                            // Navigate to the Register screen when the icon is clicked
-//                            navController.navigate(Screen.Register.route)
-                        }
+                    IconButton(onClick = { showMenu = !showMenu }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = null)
+                    }
+
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
                     ) {
-                        Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                        DropdownMenuItem(onClick = {
+                            viewModel.setLogout {
+                                showMenu = false
+                                navController.navigate(Screen.Login.route) {
+                                    popUpTo(Screen.Login.route) {
+                                        inclusive = true
+                                    }
+                                }
+                            }
+                        }) {
+                            Text(text = "Logout")
+                        }
                     }
                 }
             )
         }
     ) {
-        LaunchedEffect(Unit) {
-            viewModel.fetchToken()
-        }
-        val token by viewModel.tokenFlow.collectAsState()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -150,7 +164,9 @@ fun HomeScreen(
                             Row(modifier = modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween) {
                                 Text(stringResource(id = R.string.popular), fontFamily = fonts, fontWeight = FontWeight.Bold, color = green87, fontSize = 22.sp)
-                                Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier.padding(0.dp,5.dp,0.dp,0.dp).clickable { })
+                                Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier
+                                    .padding(0.dp, 5.dp, 0.dp, 0.dp)
+                                    .clickable { })
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                             HomeDestinationContent(
@@ -178,7 +194,9 @@ fun HomeScreen(
                             Row(modifier = modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween) {
                                 Text(stringResource(id = R.string.cultural), fontFamily = fonts, fontWeight = FontWeight.Bold, color = green87, fontSize = 22.sp)
-                                Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier.padding(0.dp,5.dp,0.dp,0.dp).clickable { navController.navigate(Screen.Cultural.route) })
+                                Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier
+                                    .padding(0.dp, 5.dp, 0.dp, 0.dp)
+                                    .clickable { navController.navigate(Screen.Cultural.route) })
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                             HomeContent(
@@ -199,7 +217,9 @@ fun HomeScreen(
                 Row(modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(stringResource(id = R.string.community_stories), fontFamily = fonts, fontWeight = FontWeight.Bold, color = green87, fontSize = 22.sp)
-                    Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier.padding(0.dp,5.dp,0.dp,0.dp).clickable { navController.navigate(Screen.Cultural.route) })
+                    Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier
+                        .padding(0.dp, 5.dp, 0.dp, 0.dp)
+                        .clickable { navController.navigate(Screen.Cultural.route) })
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 HomeCommunityContent(modifier = modifier.fillMaxWidth())

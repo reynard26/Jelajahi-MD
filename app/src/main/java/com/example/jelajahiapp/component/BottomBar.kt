@@ -46,7 +46,7 @@ fun BottomBar(
             NavItem(
                 title = stringResource(R.string.explore),
                 icon = R.drawable.baseline_travel_explore_24,
-                screen = Screen.Favorite,
+                screen = Screen.Explorer,
                 contentDescription = stringResource(R.string.menu_explore)
             ),
             NavItem(

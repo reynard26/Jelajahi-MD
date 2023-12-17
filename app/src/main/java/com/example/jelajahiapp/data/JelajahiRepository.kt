@@ -1,9 +1,13 @@
 package com.example.jelajahiapp.data
 
 import android.util.Log
+import com.example.jelajahiapp.data.location.ResponseLocation
 import com.example.jelajahiapp.data.response.ResponseLogin
 import com.example.jelajahiapp.data.response.ResponseUser
 import com.example.jelajahiapp.data.retrofit.ApiService
+import com.example.jelajahiapp.data.retrofit.ExploreRequest
+import com.example.jelajahiapp.data.retrofit.LoginRequest
+import com.example.jelajahiapp.data.retrofit.RegisterRequest
 import com.example.jelajahiapp.data.room.Cultural
 import com.example.jelajahiapp.data.room.FakeCulturalDataSource
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +15,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
+import org.json.JSONException
 import org.json.JSONObject
+import retrofit2.Response
 
 
 class JelajahiRepository(
@@ -25,21 +31,17 @@ class JelajahiRepository(
         return flow {
             emit(Result.Loading)
             try {
-                Log.d("dataapa aja2",email)
-                Log.d("dataapa aja2",password)
-                val response = apiService.login(email, password)
-                Log.d("dataapa aja",response.toString())
-                Log.d("dataapa aja",email)
-                Log.d("dataapa aja",password)
+                val response = apiService.login(LoginRequest(email, password))
                 if (response.isSuccessful) {
                     emit(Result.Success(response.body()))
                 } else {
                     val errorMessage = response.errorBody()?.string()
                     try {
                         val json = JSONObject(errorMessage.toString())
-                        val message = json.getString("message")
-                        emit(Result.Error(message, errorMessage))
-                    } catch (e: Exception) {
+                        val serverMsg = json.getString("msg")
+                        emit(Result.Error(serverMsg, errorMessage))
+                    } catch (e: JSONException) {
+                        // Handle JSON parsing error, show a default message, or take appropriate action
                         emit(Result.Error("An error occurred", errorMessage))
                     }
                 }
@@ -54,7 +56,7 @@ class JelajahiRepository(
     ): Flow<Result<ResponseUser?>> = flow {
         emit(Result.Loading)
         try {
-            val response = apiService.register(name, email, password)
+            val response = apiService.register(RegisterRequest(name,email, password))
 
             if (response.isSuccessful) {
                 emit(Result.Success(response.body()))
@@ -76,6 +78,10 @@ class JelajahiRepository(
 
     fun getToken(): Flow<String?> = userPreferences.getToken()
     fun getId(): Flow<String?> = userPreferences.getId()
+
+    suspend fun getExplore(exploreRequest: ExploreRequest): Response<ResponseLocation> {
+        return apiService.getExplore(exploreRequest)
+    }
 
     suspend fun saveToken(token: String, userId: String) {
         userPreferences.saveUserToken(token, userId)

@@ -7,6 +7,7 @@ import com.example.jelajahiapp.di.Injection
 import com.example.jelajahiapp.ui.screen.authorization.viewmodel.UserViewModel
 import com.example.jelajahiapp.ui.screen.community.viewmodel.CommunityViewModel
 import com.example.jelajahiapp.ui.screen.cultural.DetailCulturalViewModel
+import com.example.jelajahiapp.ui.screen.explorer.ExplorerViewModel
 import com.example.jelajahiapp.ui.screen.home.HomeViewModel
 
 
@@ -27,6 +28,9 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(DetailCulturalViewModel::class.java) -> {
                 DetailCulturalViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ExplorerViewModel::class.java) -> {
+                ExplorerViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

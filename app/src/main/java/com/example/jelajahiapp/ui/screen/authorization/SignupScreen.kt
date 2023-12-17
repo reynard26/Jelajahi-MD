@@ -1,5 +1,6 @@
 package com.example.jelajahiapp.ui.screen.authorization
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -40,6 +41,8 @@ import androidx.navigation.NavHostController
 import com.example.jelajahiapp.R
 import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
+import com.example.jelajahiapp.data.response.ResponseLogin
+import com.example.jelajahiapp.data.response.ResponseUser
 import com.example.jelajahiapp.navigation.Screen
 import com.example.jelajahiapp.ui.screen.authorization.component.ButtonGoogle
 import com.example.jelajahiapp.ui.screen.authorization.component.Email
@@ -84,7 +87,7 @@ import com.example.jelajahiapp.ui.theme.white100
                             }
                         ) {
                             Text(
-                                text = "Login",
+                                text = stringResource(id = R.string.login),
                                 maxLines = 1,
                                 fontSize = 16.sp,
                                 color = black100,
@@ -205,19 +208,15 @@ import com.example.jelajahiapp.ui.theme.white100
                                     )
                                 }
                                 is Result.Success -> {
-                                    Toast.makeText(
-                                        context,
-                                        "${signupState.data.message}",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                    // Update the state
+                                    Toast.makeText(context, R.string.account_created, Toast.LENGTH_LONG).show()
                                     isSignupButtonClickedState = false
                                     navController.navigate(Screen.Login.route)
                                 }
+
                                 is Result.Error -> {
-                                    val errorMessage = signupState.error
-                                    Toast.makeText(context, "$errorMessage", Toast.LENGTH_LONG).show()
-                                    // Update the state
+                                    val errorState = signupState as? Result.Error
+                                    val serverMsg = errorState?.message ?: "An unknown error occurred" // Default message if 'message' is null
+                                    Toast.makeText(context, serverMsg, Toast.LENGTH_LONG).show()
                                     isSignupButtonClickedState = false
                                 }
                                 else -> {}
@@ -255,15 +254,3 @@ import com.example.jelajahiapp.ui.theme.white100
             }
         }
     }
-
-
-//@Preview(name = "Sign in light theme", uiMode = Configuration.UI_MODE_NIGHT_NO)
-//@Preview(name = "Sign in dark theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
-//@Composable
-//fun SignupPreview() {
-//    JelajahiAppTheme {
-//        SignupScreen(
-//
-//        )
-//    }
-//}

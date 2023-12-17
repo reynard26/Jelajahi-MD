@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -127,7 +128,7 @@ fun CulturalContent(
         Box(modifier = modifier.padding(innerPadding).padding(15.dp)) {
             Column {
                 Text(
-                    text = "Cultural Encyclopedia",
+                    text = stringResource(id = R.string.cultural),
                     fontFamily = fonts,
                     fontWeight = FontWeight.ExtraBold,
                     color = purple100,

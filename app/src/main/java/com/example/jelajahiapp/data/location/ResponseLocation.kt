@@ -35,7 +35,7 @@ data class PlaceResult(
     val userRatingsTotal: Int,
 
     @field:SerializedName("vicinity")
-    val vicinity: Int,
+    val vicinity: String,
 )
 
 data class Geometry(

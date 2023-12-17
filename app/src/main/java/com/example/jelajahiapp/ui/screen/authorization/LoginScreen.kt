@@ -88,7 +88,7 @@ fun LoginScreen(
                         }
                     ) {
                         Text(
-                            text = "Register",
+                            text = stringResource(id = R.string.register),
                             maxLines = 1,
                             fontSize = 16.sp,
                             color = black100,
@@ -133,7 +133,9 @@ fun LoginContent(
     LaunchedEffect(Unit) {
         homeviewModel.fetchToken()
     }
+
     val tokenState by homeviewModel.tokenFlow.collectAsState()
+
     LaunchedEffect(tokenState) {
         if (tokenState != null && tokenState!!.isNotBlank()) {
             navController.navigate(Screen.Home.route)
@@ -218,23 +220,20 @@ fun LoginContent(
                                         val token = data.loginResult?.token
                                         val userId = data.loginResult?.userId
                                         if (!token.isNullOrBlank() && userId != null) {
-                                            Toast.makeText(
-                                                context,
-                                                "${data.message}",
-                                                Toast.LENGTH_LONG
-                                            ).show()
+                                            Toast.makeText(context, "${data.message}", Toast.LENGTH_LONG).show()
                                             isLoginButtonClickedState = false
                                             navController.navigate(Screen.Home.route)
                                             viewModel.saveToken(token, userId)
                                         } else {
+                                            // Handle the case where token or userId is null or blank
                                         }
                                     }
                                 }
 
                                 is Result.Error -> {
-                                    val errorMessage = (loginState as Result.Error).error
-                                    Toast.makeText(context, "$errorMessage", Toast.LENGTH_LONG)
-                                        .show()
+                                    val errorState = loginState as? Result.Error
+                                    val serverMsg = errorState?.message ?: "An unknown error occurred" // Default message if 'message' is null
+                                    Toast.makeText(context, serverMsg, Toast.LENGTH_LONG).show()
                                     isLoginButtonClickedState = false
                                 }
 
