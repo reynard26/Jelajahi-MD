@@ -31,15 +31,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.example.jelajahiapp.R
-import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
+import com.example.jelajahiapp.data.location.PlaceResult
+import com.example.jelajahiapp.ui.screen.explorer.buildPhotoUrl
 import com.example.jelajahiapp.ui.theme.Shapes
 import com.example.jelajahiapp.ui.theme.fonts
 import com.example.jelajahiapp.ui.theme.purple100
@@ -47,9 +47,7 @@ import com.example.jelajahiapp.ui.theme.white30
 
 @Composable
 fun HomeDestinationItem(
-    placeName: String,
-    image: Int,
-    address: String,
+    location: PlaceResult,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -59,13 +57,15 @@ fun HomeDestinationItem(
             .clip(shape = Shapes.large)
             .background(Color.Transparent)
     ) {
-        Image(
-            painter = painterResource(id = image),
-            contentDescription = null, // Provide a meaningful content description
-            contentScale = ContentScale.Crop, // Adjust as needed
-            modifier = Modifier
-                .fillMaxSize()
-        )
+        location.photos?.firstOrNull()?.let { photo ->
+            Image(
+                painter = rememberImagePainter(data = buildPhotoUrl(photo.photoReference, 400)),
+                contentDescription = null,
+                contentScale = ContentScale.Crop, // Adjust as needed
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
         Box(modifier = modifier
             .absolutePadding(8.dp, 120.dp, 0.dp, 0.dp)
             .width(150.dp)
@@ -75,7 +75,7 @@ fun HomeDestinationItem(
         ){
             Column (modifier.padding(7.dp)){
                 Text(
-                    text = placeName,
+                    text = location.name.truncate(12),
                     overflow = TextOverflow.Ellipsis,
                     fontFamily = fonts,
                     fontWeight = FontWeight.ExtraBold,
@@ -93,7 +93,7 @@ fun HomeDestinationItem(
                     )
 
                     Text(
-                        text = address,
+                        text = (location.vicinity).truncate(13),
                         fontFamily = fonts,
                         fontWeight = FontWeight.Medium,
                         color = Color.Gray,
@@ -191,16 +191,4 @@ fun MyFavoriteIcon() {
                 isFavorite = !isFavorite
             }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ItemPreview() {
-    JelajahiAppTheme {
-        HomeDestinationItem(
-            placeName = "Golden Retriever",
-            image = R.drawable.lasem,
-            address = "Inggris"
-        )
-    }
 }

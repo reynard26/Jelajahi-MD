@@ -11,7 +11,9 @@ import com.example.jelajahiapp.ui.screen.authorization.LoginScreen
 import com.example.jelajahiapp.ui.screen.authorization.SignupScreen
 import com.example.jelajahiapp.ui.screen.cultural.CulturalScreen
 import com.example.jelajahiapp.ui.screen.cultural.DetailCulturalScreen
+import com.example.jelajahiapp.ui.screen.explorer.DetailExplorerScreen
 import com.example.jelajahiapp.ui.screen.explorer.ExplorerScreen
+import com.example.jelajahiapp.ui.screen.home.DetailHomeExplorerScreen
 import com.example.jelajahiapp.ui.screen.home.HomeScreen
 import com.example.jelajahiapp.ui.screen.recommendation.RecommendationActivity
 import com.example.jelajahiapp.ui.screen.splash.OnBoardingScreen
@@ -39,15 +41,30 @@ fun NavGraph(
         }
 
         composable(route = Screen.Home.route) {
-            HomeScreen(navController = navController,
+            HomeScreen(
+                navController = navController,
                 navigateToDetail = { culturalID ->
                     navController.navigate(Screen.Detail.createRoute(culturalID))
-                })
+                },
+                navigateToDetailExplorer = { placeId ->
+                    navController.navigate(Screen.DetailHomeExplorer.createRoute(placeId))
+                }
+
+            )
         }
 
-        composable(route = Screen.RecommendationActivity.route) {
-           RecommendationActivity()
+        composable(
+            route = Screen.DetailHomeExplorer.route,
+            arguments = listOf(navArgument("placeId") { type = NavType.StringType }),
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("placeId") ?: "1"
+            DetailHomeExplorerScreen(
+                placeId = id,
+            ) {
+                navController.navigateUp()
+            }
         }
+
 
         composable(
             route = Screen.Detail.route,
@@ -61,6 +78,11 @@ fun NavGraph(
             }
         }
 
+
+        composable(route = Screen.RecommendationActivity.route) {
+            RecommendationActivity()
+        }
+
         composable(route = Screen.Cultural.route) {
             CulturalScreen(navController = navController, navigateToDetail = { culturalID ->
                 navController.navigate(Screen.Detail.createRoute(culturalID)) }, navigateBack = { navController.navigateUp() })
@@ -71,8 +93,25 @@ fun NavGraph(
         }
 
         composable(route = Screen.Explorer.route) {
-            ExplorerScreen(navController = navController)
+            ExplorerScreen(navController = navController,
+                navigateToDetailExplorerScreen = { placeId ->
+                    navController.navigate(Screen.DetailExplorer.createRoute(placeId))
+                })
         }
+
+        composable(
+            route = Screen.DetailExplorer.route,
+            arguments = listOf(navArgument("placeId") { type = NavType.StringType }),
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("placeId") ?: "1"
+            DetailExplorerScreen(
+                placeId = id,
+            ) {
+                navController.navigateUp()
+            }
+        }
+
+
 
 //        composable(route = Screen.Register.route) {
 //            AddCommunityScreen(onCommunitySubmited)

@@ -1,6 +1,5 @@
 package com.example.jelajahiapp.data
 
-import android.util.Log
 import com.example.jelajahiapp.data.location.ResponseLocation
 import com.example.jelajahiapp.data.response.ResponseLogin
 import com.example.jelajahiapp.data.response.ResponseUser

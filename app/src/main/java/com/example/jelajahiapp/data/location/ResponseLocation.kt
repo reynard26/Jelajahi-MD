@@ -14,7 +14,7 @@ data class ResponseLocation(
 data class PlaceResult(
 
     @field:SerializedName("geometry")
-    val geometry: Geometry,
+    val geometry: Location,
 
     @field:SerializedName("name")
     val name: String,
@@ -38,7 +38,11 @@ data class PlaceResult(
     val vicinity: String,
 )
 
-data class Geometry(
+data class Location(
+    @field:SerializedName("location")
+    val location: LatLong
+)
+data class LatLong(
     @field:SerializedName("lat")
     val lat: Double,
     @field:SerializedName("lng")

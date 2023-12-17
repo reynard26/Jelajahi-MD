@@ -1,26 +1,21 @@
 package com.example.jelajahiapp.ui.screen.explorer
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jelajahiapp.data.JelajahiRepository
 import com.example.jelajahiapp.data.location.PlaceResult
-import com.example.jelajahiapp.data.location.ResponseLocation
 import com.example.jelajahiapp.data.retrofit.ExploreRequest
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class ExplorerViewModel(private val repository: JelajahiRepository) : ViewModel() {
 
-    private val _responseLocation = MutableLiveData<Response<ResponseLocation>>()
-    val responseLocation: LiveData<Response<ResponseLocation>> get() = _responseLocation
-
-    private val _filteredLocations = MutableStateFlow<List<PlaceResult>>(emptyList())
-    val filteredLocations: StateFlow<List<PlaceResult>> get() = _filteredLocations
+    private val _locations = MutableStateFlow<List<PlaceResult>>(emptyList())
+    val locations: StateFlow<List<PlaceResult>> get() = _locations
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> get() = _isLoading
@@ -30,15 +25,13 @@ class ExplorerViewModel(private val repository: JelajahiRepository) : ViewModel(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> get() = _searchQuery
 
-    init {
-        // Start observing the search query and update filtered locations accordingly
-        viewModelScope.launch {
-            _searchQuery.collectLatest { query ->
-                filterLocations(query)
-            }
-        }
+    private val _locationDetails = MutableStateFlow<PlaceResult?>(null)
+    val locationDetails: StateFlow<PlaceResult?> get() = _locationDetails
 
-        // Call getExplore in the init block
+    private val _isLoadingDetails = MutableStateFlow(false)
+    val isLoadingDetails: StateFlow<Boolean> get() = _isLoadingDetails
+
+    init {
         getExplore()
     }
 
@@ -47,19 +40,19 @@ class ExplorerViewModel(private val repository: JelajahiRepository) : ViewModel(
             if (!_isLoading.value) {
                 try {
                     _isLoading.value = true
-                    if (currentLocationIndex < locations.size) {
-                        val location = locations[currentLocationIndex]
+                    if (currentLocationIndex < locationsList.size) {
+                        val location = locationsList[currentLocationIndex]
                         val exploreRequest = ExploreRequest(propertyName = location)
                         val response = repository.getExplore(exploreRequest)
 
                         if (response.isSuccessful) {
                             val results = response.body()?.results ?: emptyList()
-                            _filteredLocations.value = _filteredLocations.value + results
+                            val combinedList = _locations.value + results
+                            _locations.value = combinedList.distinctBy { it.placeId }
                             currentLocationIndex++
                         }
                     }
                 } catch (e: Exception) {
-                    // Handle errors if necessary
                 } finally {
                     _isLoading.value = false
                 }
@@ -67,19 +60,66 @@ class ExplorerViewModel(private val repository: JelajahiRepository) : ViewModel(
         }
     }
 
-    fun filterLocations(query: String) {
-        val locations = _filteredLocations.value
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
 
-        val filteredList = if (query.isNotBlank()) {
-            locations.filter { it.name.contains(query, ignoreCase = true) }
-        } else {
+    val filteredLocations: StateFlow<List<PlaceResult>> = combine(locations, searchQuery) { locations, query ->
+        if (query.isBlank()) {
             locations
+        } else {
+            locations.filter { it.name.contains(query, ignoreCase = true) }
         }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-        _filteredLocations.value = filteredList
+
+    fun getLocationDetails(placeId: String) {
+        viewModelScope.launch {
+            try {
+                _isLoadingDetails.value = true
+                if (_locations.value.isEmpty()) {
+                    getExploreForAllLocations()
+                }
+
+                _isLoading.collect { isLoading ->
+                    if (!isLoading) {
+                        val location = _locations.value.find { it.placeId == placeId }
+
+                        if (location != null) {
+                            _locationDetails.value = location
+                        }
+
+                        _isLoadingDetails.value = false
+                    }
+                }
+            } catch (e: Exception) {
+                // Handle the exception
+                _isLoadingDetails.value = false
+            }
+        }
     }
 
-    companion object {
-        private val locations = listOf("batiklasem", "batikparang", "batikpati", "batikpekalongan", "batiksidoluhur")
+    private fun getExploreForAllLocations() {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+
+                locationsList.forEach { location ->
+                    val exploreRequest = ExploreRequest(propertyName = location)
+                    val response = repository.getExplore(exploreRequest)
+
+                    if (response.isSuccessful) {
+                        val results = response.body()?.results ?: emptyList()
+                        val combinedList = _locations.value + results
+                        _locations.value = combinedList.distinctBy { it.placeId }
+                    }
+                }
+            } catch (e: Exception) {
+            } finally {
+                _isLoading.value = false
+            }
+        }
     }
+
+    private val locationsList = listOf("batiklasem", "batikparang", "batikpati", "batikpekalongan", "batiksidoluhur")
 }

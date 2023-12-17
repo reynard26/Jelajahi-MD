@@ -1,6 +1,7 @@
 package com.example.jelajahiapp.ui.screen.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -33,6 +34,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -56,10 +58,12 @@ import com.example.jelajahiapp.R
 import com.example.jelajahiapp.component.BottomBar
 import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
+import com.example.jelajahiapp.data.location.PlaceResult
 import com.example.jelajahiapp.data.room.Cultural
 import com.example.jelajahiapp.navigation.Screen
 import com.example.jelajahiapp.ui.screen.community.HomeCommunityItem
 import com.example.jelajahiapp.ui.screen.cultural.CulturalItem
+import com.example.jelajahiapp.ui.screen.recommendation.RecommendationActivity
 import com.example.jelajahiapp.ui.theme.Shapes
 import com.example.jelajahiapp.ui.theme.fonts
 import com.example.jelajahiapp.ui.theme.green87
@@ -75,11 +79,18 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory.getInstance(LocalContext.current)
     ),
-    navigateToDetail: (Long) -> Unit
+    navigateToDetail: (Long) -> Unit,
+    navigateToDetailExplorer: (String) -> Unit
 ) {
     var showMenu by remember { mutableStateOf(false) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val locations by viewModel.locations.collectAsState(emptyList())
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.getRandomLocation()
+    }
 
     Scaffold(
         bottomBar = {
@@ -146,42 +157,48 @@ fun HomeScreen(
                         Text(text = stringResource(id = R.string.travel_references), fontFamily = fonts, fontWeight = FontWeight.Bold, color = white100, fontSize = 16.sp)
                         Spacer(modifier = Modifier.height(5.dp))
                         Text(text = stringResource(id = R.string.capture_your), fontFamily = fonts, color = white100, fontSize = 12.sp)
-                        Button(onClick = { /*TODO*/ },
+                        Button(onClick = { context.startActivity(Intent(context, RecommendationActivity::class.java)) },
                             colors = ButtonDefaults.buttonColors(Color.White)) {
                             Text(text = stringResource(id = R.string.capture_image), color = purple100)
                         }
                     }
                 }
-                viewModel.uiState.collectAsState(initial = Result.Loading).value.let { uiState ->
-                    when (uiState) {
-                        is Result.Loading -> {
-                            viewModel.getAllCultural()
-                        }
-
-                        is Result.Success -> {
-                            Spacer(modifier = Modifier.height(20.dp))
-                            Row(modifier = modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween) {
-                                Text(stringResource(id = R.string.popular), fontFamily = fonts, fontWeight = FontWeight.Bold, color = green87, fontSize = 22.sp)
-                                Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier
-                                    .padding(0.dp, 5.dp, 0.dp, 0.dp)
-                                    .clickable { })
+                Spacer(modifier = Modifier.height(20.dp))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.popular),
+                        fontFamily = fonts,
+                        fontWeight = FontWeight.Bold,
+                        color = green87,
+                        fontSize = 22.sp
+                    )
+                    Text(
+                        text = stringResource(id = R.string.see_all),
+                        fontFamily = fonts,
+                        color = purple100,
+                        fontSize = 13.sp,
+                        modifier = Modifier
+                            .padding(0.dp, 5.dp, 0.dp, 0.dp)
+                            .clickable {
+                                navController.navigate(route = Screen.Explorer.route) {
+                                    // Add HomeScreen to the back stack
+                                    launchSingleTop = true
+                                    popUpTo(Screen.Home.route) {
+                                        inclusive = true
+                                    }
+                                }
                             }
-                            Spacer(modifier = Modifier.height(12.dp))
-                            HomeDestinationContent(
-                                listCultural = uiState.data, // Access the data using getOrThrow()
-                                navigateToDetail = navigateToDetail,
-                                modifier = modifier
-                            )
-                        }
-
-                        is Result.Error -> {
-                            // Handle error case
-                        }
-
-                        else -> {}
-                    }
+                    )
                 }
+                Spacer(modifier = Modifier.height(12.dp))
+                HomeDestinationContent(
+                    locations = locations,
+                    navigateToDetailExplorer = navigateToDetailExplorer,
+                    modifier = modifier
+                )
                 viewModel.uiState.collectAsState(initial = Result.Loading).value.let { uiState ->
                     when (uiState) {
                         is Result.Loading -> {
@@ -199,16 +216,11 @@ fun HomeScreen(
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                             HomeContent(
-                                listCultural = uiState.data, // Access the data using getOrThrow()
+                                listCultural = uiState.data,
                                 navigateToDetail = navigateToDetail,
                                 modifier = modifier
                             )
                         }
-
-                        is Result.Error -> {
-                            // Handle error case
-                        }
-
                         else -> {}
                     }
                 }
@@ -227,6 +239,7 @@ fun HomeScreen(
         }
     }
 }
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -267,46 +280,34 @@ fun HomeContent(
     }
 }
 
+
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeDestinationContent(
-    listCultural: List<Cultural>,
-    navigateToDetail: (Long) -> Unit,
+    locations: List<PlaceResult>,
+    navigateToDetailExplorer: (String) -> Unit,
     modifier: Modifier
 ) {
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
 
-    val showButton: Boolean by remember {
-        derivedStateOf { listState.firstVisibleItemIndex > 0 }
-    }
-
     Box(modifier = modifier) {
-        Row {
-            LazyRow(
-                state = listState,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = modifier
-                    .testTag("CulturalList")
-            ) {
-                items(listCultural, key = { it.id }) { culturalItem ->
-                    HomeDestinationItem(
-                        placeName = culturalItem.culturalName,
-                        image = culturalItem.image,
-                        address = culturalItem.location.truncate(14),
-                        modifier = Modifier
-                            .clickable {
-                                navigateToDetail(culturalItem.id)
-                            }
-                            .animateItemPlacement(tween(durationMillis = 500))
-                    )
-                }
+        LazyRow(
+            state = listState,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            items(locations) { location ->
+                HomeDestinationItem(location = location, modifier = modifier.clickable {
+                    navigateToDetailExplorer(location.placeId)
+                }.animateItemPlacement(tween(durationMillis = 500)))
             }
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+
+
 @Composable
 fun HomeCommunityContent(
     modifier: Modifier

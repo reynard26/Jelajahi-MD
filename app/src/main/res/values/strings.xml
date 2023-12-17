@@ -58,4 +58,8 @@
     <string name="discover_indonesiaan">Discover Indonesian Cultural Destinations</string>
     <string name="clear">clear</string>
     <string name="search_location">Search Location</string>
+    <string name="back">Back</string>
+    <string name="add_favorite">Add to Favorite</string>
+    <string name="remove_favorite">Remove to Favorite</string>
+    <string name="user_total_ratings">(%1$s)</string>
 </resources>
