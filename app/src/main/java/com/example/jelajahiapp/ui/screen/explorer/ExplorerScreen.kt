@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -30,6 +31,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -37,10 +39,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberImagePainter
 import com.example.jelajahiapp.data.ViewModelFactory
 import com.example.jelajahiapp.data.location.PlaceResult
 import com.example.jelajahiapp.data.retrofit.ExploreRequest
 import com.example.jelajahiapp.ui.screen.authorization.viewmodel.UserViewModel
+import com.example.jelajahiapp.ui.theme.Shapes
 import kotlinx.coroutines.launch
 
 @Composable
@@ -91,5 +95,22 @@ fun LocationItem(location: PlaceResult) {
     ) {
         Text(text = location.name, fontWeight = FontWeight.Bold, fontSize = 18.sp)
         Text(text = "Rating: ${location.rating}")
+        Text(text = location.vicinity)
+
+        location.photos?.firstOrNull()?.let { photo ->
+            Image(
+                painter = rememberImagePainter(data = buildPhotoUrl(photo.photoReference, 400)),
+                contentDescription = null,
+                modifier = Modifier
+                    .height(200.dp)
+                    .fillMaxWidth()
+                    .clip(shape = Shapes.large)
+            )
+        }
     }
+}
+fun buildPhotoUrl(photoReference: String, maxWidth: Int): String {
+    val apiKey = "AIzaSyDikJA_zqvlFv4heu7UnWMht7j1JOTpiN8" // Replace with your actual API key
+    val baseUrl = "https://maps.googleapis.com/maps/api/place/photo"
+    return "$baseUrl?maxwidth=$maxWidth&photo_reference=$photoReference&key=$apiKey"
 }
