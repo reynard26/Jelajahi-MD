@@ -80,9 +80,7 @@ fun DetailHomeExplorerScreen(
 
     val locationDetails by viewModel.locationDetails.collectAsState()
 
-    // Check isLoadingDetails to show/hide loading indicator
     if (isLoadingDetails) {
-        // Show loading indicator
         CircularProgressIndicator(
             modifier = Modifier
                 .fillMaxSize()
@@ -214,7 +212,7 @@ fun DetailHomeExplorerContent(
                             Text(
                                 text = locationDetails.rating.toString(),
                                 overflow = TextOverflow.Ellipsis,
-                                fontWeight = FontWeight.Medium,
+                                fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp,
                                 fontFamily = fonts,
                                 color = grey40,
@@ -233,7 +231,7 @@ fun DetailHomeExplorerContent(
                             Text(
                                 text = stringResource(id = R.string.user_total_ratings,locationDetails.userRatingsTotal.toString()),
                                 overflow = TextOverflow.Ellipsis,
-                                fontWeight = FontWeight.Medium,
+                                fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp,
                                 fontFamily = fonts,
                                 color = grey40,

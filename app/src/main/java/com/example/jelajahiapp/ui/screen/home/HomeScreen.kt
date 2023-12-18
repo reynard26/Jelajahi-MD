@@ -36,7 +36,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -184,7 +183,6 @@ fun HomeScreen(
                             .padding(0.dp, 5.dp, 0.dp, 0.dp)
                             .clickable {
                                 navController.navigate(route = Screen.Explorer.route) {
-                                    // Add HomeScreen to the back stack
                                     launchSingleTop = true
                                     popUpTo(Screen.Home.route) {
                                         inclusive = true
@@ -248,12 +246,7 @@ fun HomeContent(
     navigateToDetail: (Long) -> Unit,
     modifier: Modifier
 ) {
-    val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-
-    val showButton: Boolean by remember {
-        derivedStateOf { listState.firstVisibleItemIndex > 0 }
-    }
 
     Box(modifier = modifier) {
         Row {
@@ -289,7 +282,6 @@ fun HomeDestinationContent(
     navigateToDetailExplorer: (String) -> Unit,
     modifier: Modifier
 ) {
-    val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
 
     Box(modifier = modifier) {

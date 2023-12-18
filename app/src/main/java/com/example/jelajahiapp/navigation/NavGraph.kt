@@ -65,6 +65,10 @@ fun NavGraph(
             }
         }
 
+        composable(route = Screen.Cultural.route) {
+            CulturalScreen(navController = navController, navigateToDetail = { culturalID ->
+                navController.navigate(Screen.Detail.createRoute(culturalID)) }, navigateBack = { navController.navigateUp() })
+        }
 
         composable(
             route = Screen.Detail.route,
@@ -83,10 +87,6 @@ fun NavGraph(
             RecommendationActivity()
         }
 
-        composable(route = Screen.Cultural.route) {
-            CulturalScreen(navController = navController, navigateToDetail = { culturalID ->
-                navController.navigate(Screen.Detail.createRoute(culturalID)) }, navigateBack = { navController.navigateUp() })
-        }
 
         composable(route = Screen.AddCommunity.route) {
 //            CommunityScreen(navController = navController)

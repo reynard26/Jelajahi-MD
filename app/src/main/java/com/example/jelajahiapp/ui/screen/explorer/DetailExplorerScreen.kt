@@ -2,7 +2,6 @@ package com.example.jelajahiapp.ui.screen.explorer
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -74,11 +73,10 @@ fun DetailExplorerScreen(
     val isLoadingDetails by viewModel.isLoadingDetails.collectAsState()
     val locationDetails by viewModel.locationDetails.collectAsState()
 
-    // Panggil fungsi di luar LaunchedEffect
+
     viewModel.getLocationDetails(placeId)
 
     if (isLoadingDetails) {
-        // Show loading indicator
         CircularProgressIndicator(
             modifier = Modifier
                 .fillMaxSize()
@@ -86,17 +84,12 @@ fun DetailExplorerScreen(
         )
     } else {
         if (locationDetails != null) {
-            Log.d("tesitn", locationDetails.toString())
-            // Show details screen
             DetailExplorerContent(
                 locationDetails = locationDetails!!,
                 onBackClick = navigateBack,
                 favoriteDogStatus = false,
                 updateFavoriteStatus = { /* provide your logic */ }
             )
-        } else {
-            // Handle the case where details are not available
-            Text("Details not available")
         }
     }
 }
@@ -215,7 +208,7 @@ fun DetailExplorerContent(
                             Text(
                                 text = locationDetails.rating.toString(),
                                 overflow = TextOverflow.Ellipsis,
-                                fontWeight = FontWeight.Medium,
+                                fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp,
                                 fontFamily = fonts,
                                 color = grey40,
@@ -234,7 +227,7 @@ fun DetailExplorerContent(
                             Text(
                                 text = stringResource(id = R.string.user_total_ratings,locationDetails.userRatingsTotal.toString()),
                                 overflow = TextOverflow.Ellipsis,
-                                fontWeight = FontWeight.Medium,
+                                fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp,
                                 fontFamily = fonts,
                                 color = grey40,

@@ -97,7 +97,6 @@ class HomeViewModel(private val repository: JelajahiRepository) : ViewModel() {
                 }
 
             } catch (e: Exception) {
-                // Handle exceptions if needed
             } finally {
                 _isLoading.value = false
             }
@@ -109,7 +108,7 @@ class HomeViewModel(private val repository: JelajahiRepository) : ViewModel() {
             _isLoadingDetails.value = true
 
             while (_isLoading.value) {
-                delay(100) // Wait for 100 ms
+                delay(100)
             }
 
             val location = _locations.value.find { it.placeId == placeId }

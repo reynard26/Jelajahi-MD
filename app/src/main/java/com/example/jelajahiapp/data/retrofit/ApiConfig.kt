@@ -1,7 +1,6 @@
 package com.example.jelajahiapp.data.retrofit
 
 
-import android.util.Log
 import com.example.jelajahiapp.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

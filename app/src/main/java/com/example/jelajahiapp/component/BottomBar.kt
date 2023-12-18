@@ -77,17 +77,17 @@ fun BottomBar(
                     Icon(
                         painter = painterResource(id = item.icon),
                         contentDescription = item.title,
-                        tint = if (currentRoute == item.screen.route) purple100 else Color.White // Adjust the icon color based on selection
+                        tint = if (currentRoute == item.screen.route) purple100 else Color.White
                     )
                 },
                 label = { Text(
                     text = item.title,
-                    color = if (currentRoute == item.screen.route) Color.White else Color.White // Adjust the title color based on selection
+                    color = if (currentRoute == item.screen.route) Color.White else Color.White
                 ) },
                 alwaysShowLabel = false,
                 selected = currentRoute == item.screen.route,
                 onClick = {
-                    item.onClick?.invoke() // Invoke the custom onClick action
+                    item.onClick?.invoke()
                     navController.navigate(item.screen.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
