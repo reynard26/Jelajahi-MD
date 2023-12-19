@@ -1,6 +1,5 @@
 package com.example.jelajahiapp.ui.screen.authorization
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -41,8 +40,6 @@ import androidx.navigation.NavHostController
 import com.example.jelajahiapp.R
 import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
-import com.example.jelajahiapp.data.response.ResponseLogin
-import com.example.jelajahiapp.data.response.ResponseUser
 import com.example.jelajahiapp.navigation.Screen
 import com.example.jelajahiapp.ui.screen.authorization.component.ButtonGoogle
 import com.example.jelajahiapp.ui.screen.authorization.component.Email
@@ -58,199 +55,201 @@ import com.example.jelajahiapp.ui.theme.grey40
 import com.example.jelajahiapp.ui.theme.purple100
 import com.example.jelajahiapp.ui.theme.white100
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun SignupScreen(
-        navController: NavHostController,
-        viewModel: UserViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
-    ) {
-        val onSignUpSubmitted: (String,String, String) -> Unit = { username, email, password ->
-            viewModel.signup(username, email, password)
-        }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SignupScreen(
+    navController: NavHostController,
+    viewModel: UserViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
+) {
+    val onSignUpSubmitted: (String,String, String) -> Unit = { username, email, password ->
+        viewModel.signup(username, email, password)
+    }
 
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Image(painter = painterResource(id = R.drawable.logo),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(100.dp)
-                                .padding(0.dp,25.dp,0.dp,0.dp)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Image(painter = painterResource(id = R.drawable.logo),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(100.dp)
+                            .padding(0.dp,25.dp,0.dp,0.dp)
+                    )
+                },
+                actions = {
+                    TextButton(
+                        onClick = {
+                            // Navigate to the Register screen when the icon is clicked
+                            navController.navigate(Screen.Login.route)
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.login),
+                            maxLines = 1,
+                            fontSize = 16.sp,
+                            color = black100,
+                            fontFamily = fonts,
+                            fontWeight = FontWeight.Medium,
                         )
-                    },
-                    actions = {
-                        TextButton(
-                            onClick = {
-                                // Navigate to the Register screen when the icon is clicked
+                    }
+                }
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            Spacer(modifier = Modifier.height(20.dp))
+            SignupContent(
+                onSignUpSubmitted = onSignUpSubmitted,
+                navController = navController
+            )
+        }
+    }
+}
+@Composable
+fun SignupContent(
+    navController: NavHostController,
+    onSignUpSubmitted: (usernameState: String, emailState: String, passwordState: String) -> Unit,
+    viewModel: UserViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
+) {
+    var isSignupButtonClickedState by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    val usernameState = remember { UsernameState() }
+    val emailState = remember { EmailState() }
+    val focusRequester = remember { FocusRequester() }
+    val passwordState = remember { PasswordState() }
+    val confirmationPasswordFocusRequest = remember { FocusRequester() }
+    val confirmPasswordState =
+        remember { ConfirmPasswordState(passwordState = passwordState) }
+
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .padding(18.dp)) {
+        Column(
+            modifier = Modifier,
+        ) {
+            Text(
+                text = stringResource(id = R.string.getting_started),
+                fontFamily = fonts,
+                fontWeight = FontWeight.ExtraBold,
+                color = purple100,
+                fontSize = 26.sp
+            )
+
+            Text(
+                text = stringResource(id = R.string.account_continue),
+                fontFamily = fonts,
+                color = grey40,
+                fontSize = 15.sp
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Username(usernameState,onImeAction = { focusRequester.requestFocus() } )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Email(emailState, onImeAction = { focusRequester.requestFocus() })
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Password(
+                label = stringResource(id = R.string.password),
+                passwordState = passwordState,
+                imeAction = ImeAction.Next,
+                onImeAction = { confirmationPasswordFocusRequest.requestFocus() },
+                modifier = Modifier.focusRequester(focusRequester)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Password(
+                label = stringResource(id = R.string.confirm_password),
+                passwordState = confirmPasswordState,
+                modifier = Modifier.focusRequester(confirmationPasswordFocusRequest)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                colors = ButtonDefaults.buttonColors(
+                    disabledContainerColor = green40,
+                    disabledContentColor = white100,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                onClick = {
+                    isSignupButtonClickedState = true
+                    onSignUpSubmitted(
+                        usernameState.text,
+                        emailState.text,
+                        passwordState.text
+                    )
+                },
+                enabled = emailState.isValid &&
+                        passwordState.isValid && confirmPasswordState.isValid
+            ) {
+                when {
+                    isSignupButtonClickedState -> {
+                        when (val signupState = viewModel.defaultState.collectAsState().value) {
+                            is Result.Loading -> {
+                                // Loading state UI
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .size(30.dp)
+                                        .padding(4.dp),
+                                    color = white100
+                                )
+                            }
+                            is Result.Success -> {
+                                Toast.makeText(context, R.string.account_created, Toast.LENGTH_LONG).show()
+                                isSignupButtonClickedState = false
                                 navController.navigate(Screen.Login.route)
                             }
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.login),
-                                maxLines = 1,
-                                fontSize = 16.sp,
-                                color = black100,
-                                fontFamily = fonts,
-                                fontWeight = FontWeight.Medium,
-                            )
-                        }
-                    }
-                )
-            }
-        ) { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                Spacer(modifier = Modifier.height(20.dp))
-                SignupContent(
-                    onSignUpSubmitted = onSignUpSubmitted,
-                    navController = navController
-                )
-            }
-        }
-    }
-    @Composable
-    fun SignupContent(
-        navController: NavHostController,
-        onSignUpSubmitted: (usernameState: String, emailState: String, passwordState: String) -> Unit,
-        viewModel: UserViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
-    ) {
-        var isSignupButtonClickedState by remember { mutableStateOf(false) }
-        val context = LocalContext.current
 
-        val usernameState = remember { UsernameState() }
-        val emailState = remember { EmailState() }
-        val focusRequester = remember { FocusRequester() }
-        val confirmationPasswordFocusRequest = remember { FocusRequester() }
-
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(18.dp)) {
-            Column(
-                modifier = Modifier,
-            ) {
-                Text(
-                    text = stringResource(id = R.string.getting_started),
-                    fontFamily = fonts,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = purple100,
-                    fontSize = 26.sp
-                )
-
-                Text(
-                    text = stringResource(id = R.string.account_continue),
-                    fontFamily = fonts,
-                    color = grey40,
-                    fontSize = 15.sp
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Username(usernameState,onImeAction = { focusRequester.requestFocus() } )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Email(emailState, onImeAction = { focusRequester.requestFocus() })
-
-                Spacer(modifier = Modifier.height(8.dp))
-                val passwordState = remember { PasswordState() }
-                Password(
-                    label = stringResource(id = R.string.password),
-                    passwordState = passwordState,
-                    imeAction = ImeAction.Next,
-                    onImeAction = { confirmationPasswordFocusRequest.requestFocus() },
-                    modifier = Modifier.focusRequester(focusRequester)
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-                val confirmPasswordState =
-                    remember { ConfirmPasswordState(passwordState = passwordState) }
-                Password(
-                    label = stringResource(id = R.string.confirm_password),
-                    passwordState = confirmPasswordState,
-                    modifier = Modifier.focusRequester(confirmationPasswordFocusRequest)
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        disabledContainerColor = green40,
-                        disabledContentColor = white100,
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    onClick = {
-                        isSignupButtonClickedState = true
-                        onSignUpSubmitted(
-                            usernameState.text,
-                            emailState.text,
-                            passwordState.text
-                        )
-                    },
-                    enabled = emailState.isValid &&
-                            passwordState.isValid && confirmPasswordState.isValid
-                ) {
-                    when {
-                        isSignupButtonClickedState -> {
-                            when (val signupState = viewModel.defaultState.collectAsState().value) {
-                                is Result.Loading -> {
-                                    // Loading state UI
-                                    CircularProgressIndicator(
-                                        modifier = Modifier
-                                            .size(30.dp)
-                                            .padding(4.dp),
-                                        color = white100
-                                    )
-                                }
-                                is Result.Success -> {
-                                    Toast.makeText(context, R.string.account_created, Toast.LENGTH_LONG).show()
-                                    isSignupButtonClickedState = false
-                                    navController.navigate(Screen.Login.route)
-                                }
-
-                                is Result.Error -> {
-                                    val errorState = signupState as? Result.Error
-                                    val serverMsg = errorState?.message ?: "An unknown error occurred" // Default message if 'message' is null
-                                    Toast.makeText(context, serverMsg, Toast.LENGTH_LONG).show()
-                                    isSignupButtonClickedState = false
-                                }
-                                else -> {}
+                            is Result.Error -> {
+                                val errorState = signupState as? Result.Error
+                                val serverMsg = errorState?.message ?: "An unknown error occurred" // Default message if 'message' is null
+                                Toast.makeText(context, serverMsg, Toast.LENGTH_LONG).show()
+                                isSignupButtonClickedState = false
                             }
-                        }
-                        else -> {
-                            Text(
-                                color = white100,
-                                fontFamily = fonts,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp,
-                                text = stringResource(id = R.string.signup)
-                            )
+                            else -> {}
                         }
                     }
+                    else -> {
+                        Text(
+                            color = white100,
+                            fontFamily = fonts,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            text = stringResource(id = R.string.signup)
+                        )
+                    }
                 }
-                Text(
-                    text = stringResource(id = R.string.or),
-                    fontFamily = fonts,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-                ButtonGoogle(
-                    text = stringResource(id = R.string.sign_up_google),
-                    loadingText = stringResource(id = R.string.loading_up_google),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                ) {
+            }
+            Text(
+                text = stringResource(id = R.string.or),
+                fontFamily = fonts,
+                fontWeight = FontWeight.Medium,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            ButtonGoogle(
+                text = stringResource(id = R.string.sign_up_google),
+                loadingText = stringResource(id = R.string.loading_up_google),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
 
-                }
             }
         }
     }
+}

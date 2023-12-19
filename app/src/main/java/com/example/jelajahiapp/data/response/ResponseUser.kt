@@ -7,7 +7,7 @@ data class ResponseUser(
     @field:SerializedName("error")
     val error: Boolean? = null,
 
-    @field:SerializedName("message")
+    @field:SerializedName("msg")
     val message: String? = null
 
 )

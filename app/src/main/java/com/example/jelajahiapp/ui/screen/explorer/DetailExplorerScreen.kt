@@ -72,9 +72,10 @@ fun DetailExplorerScreen(
 ) {
     val isLoadingDetails by viewModel.isLoadingDetails.collectAsState()
     val locationDetails by viewModel.locationDetails.collectAsState()
-
-
     viewModel.getLocationDetails(placeId)
+
+    viewModel.updateStatus(placeId)
+    val favoriteStatus by viewModel.favoritePlaceStatus.collectAsState(initial = false)
 
     if (isLoadingDetails) {
         CircularProgressIndicator(
@@ -87,8 +88,8 @@ fun DetailExplorerScreen(
             DetailExplorerContent(
                 locationDetails = locationDetails!!,
                 onBackClick = navigateBack,
-                favoriteDogStatus = false,
-                updateFavoriteStatus = { /* provide your logic */ }
+                favoritePlaceStatus = favoriteStatus,
+                updateFavoriteStatus = { viewModel.changeFavorite(locationDetails!!) }
             )
         }
     }
@@ -98,7 +99,7 @@ fun DetailExplorerScreen(
 fun DetailExplorerContent(
     locationDetails: PlaceResult?,
     onBackClick: () -> Unit,
-    favoriteDogStatus: Boolean,
+    favoritePlaceStatus: Boolean,
     updateFavoriteStatus: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -151,12 +152,12 @@ fun DetailExplorerContent(
                         .align(alignment = Alignment.TopEnd)
                 ) {
                     Icon(
-                        imageVector = if (favoriteDogStatus) {
+                        imageVector = if (favoritePlaceStatus) {
                             Icons.Default.Favorite
                         } else {
                             Icons.Default.FavoriteBorder
                         },
-                        contentDescription = if (favoriteDogStatus) {
+                        contentDescription = if (favoritePlaceStatus) {
                             stringResource(R.string.remove_favorite)
                         } else {
                             stringResource(R.string.add_favorite)
@@ -269,7 +270,9 @@ fun DetailExplorerContent(
                                 modifier = modifier.fillMaxWidth(),
                                 colors = ButtonDefaults.buttonColors(green87)
                             ) {
-                                Text(text = "Route")
+                                Text(
+                                    text = stringResource(id = R.string.route),
+                                )
                             }
                         }
                     }

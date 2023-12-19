@@ -20,6 +20,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BASE_URL", "\"https://ch2-ps431-jelajahi-production.up.railway.app/\"")
+        buildConfigField("String", "API_KEY", "\"AIzaSyDikJA_zqvlFv4heu7UnWMht7j1JOTpiN8\"")
 
         vectorDrawables {
             useSupportLibrary = true
@@ -80,7 +81,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("androidx.compose.material:material-icons-extended:1.5.4")
-    implementation ("io.coil-kt:coil-compose:1.3.2")
+    implementation ("io.coil-kt:coil-compose:1.4.0")
 
     implementation ("androidx.compose.runtime:runtime-livedata:1.3.3")
 

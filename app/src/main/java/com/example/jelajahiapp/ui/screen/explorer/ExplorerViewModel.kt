@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -118,6 +119,26 @@ class ExplorerViewModel(private val repository: JelajahiRepository) : ViewModel(
             } finally {
                 _isLoading.value = false
             }
+        }
+    }
+
+    private val _favoritePlaceStatus = MutableStateFlow(false)
+    val favoritePlaceStatus: StateFlow<Boolean>
+        get() = _favoritePlaceStatus
+
+    fun updateStatus(placeId: String) = viewModelScope.launch {
+        _favoritePlaceStatus.value = repository.isFavoritePlaces(placeId).first()
+    }
+
+    fun changeFavorite(favorite: PlaceResult) {
+        viewModelScope.launch {
+            if (_favoritePlaceStatus.value) {
+                repository.delete(favorite)
+            } else {
+                repository.save(favorite)
+            }
+
+            _favoritePlaceStatus.value = !_favoritePlaceStatus.value
         }
     }
 

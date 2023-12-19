@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -114,14 +115,15 @@ fun CulturalContent(
                         )
                     }
                 },
-                title = {
+                title = {},
+                actions = {
                     Image(painter = painterResource(id = R.drawable.logo),
                         contentDescription = null,
                         modifier = Modifier
                             .size(100.dp)
                             .padding(0.dp, 25.dp, 0.dp, 0.dp)
                     )
-                },
+                }
             )
         }
     ) { innerPadding ->
@@ -134,6 +136,12 @@ fun CulturalContent(
                     color = purple100,
                     fontSize = 30.sp,
                     lineHeight = 30.sp
+                )
+                Text(
+                    text = stringResource(id = R.string.explorer_indonesian),
+                    fontFamily = fonts,
+                    color = Color.Black,
+                    fontSize = 15.sp,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 LazyVerticalGrid(

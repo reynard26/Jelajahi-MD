@@ -1,6 +1,5 @@
 package com.example.jelajahiapp.ui.screen.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -14,6 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: JelajahiRepository) : ViewModel() {
@@ -121,6 +121,26 @@ class HomeViewModel(private val repository: JelajahiRepository) : ViewModel() {
             }
 
             _isLoadingDetails.value = false
+        }
+    }
+
+    private val _favoritePlaceStatus = MutableStateFlow(false)
+    val favoritePlaceStatus: StateFlow<Boolean>
+        get() = _favoritePlaceStatus
+
+    fun updateStatus(placeId: String) = viewModelScope.launch {
+        _favoritePlaceStatus.value = repository.isFavoritePlaces(placeId).first()
+    }
+
+    fun changeFavorite(favorite: PlaceResult) {
+        viewModelScope.launch {
+            if (_favoritePlaceStatus.value) {
+                repository.delete(favorite)
+            } else {
+                repository.save(favorite)
+            }
+
+            _favoritePlaceStatus.value = !_favoritePlaceStatus.value
         }
     }
 

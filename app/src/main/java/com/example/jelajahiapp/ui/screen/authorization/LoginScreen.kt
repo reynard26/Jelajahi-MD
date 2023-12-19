@@ -1,6 +1,5 @@
 package com.example.jelajahiapp.ui.screen.authorization
 
-import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -33,7 +32,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -48,7 +46,6 @@ import com.example.jelajahiapp.ui.screen.authorization.component.EmailState
 import com.example.jelajahiapp.ui.screen.authorization.component.Password
 import com.example.jelajahiapp.ui.screen.authorization.viewmodel.UserViewModel
 import com.example.jelajahiapp.ui.screen.home.HomeViewModel
-import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 import com.example.jelajahiapp.ui.theme.black100
 import com.example.jelajahiapp.ui.theme.fonts
 import com.example.jelajahiapp.ui.theme.green40
@@ -275,16 +272,16 @@ fun LoginContent(
 //                // Handle Google sign-in click
 //            }
 
-@Preview(name = "Sign in light theme", uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(name = "Sign in dark theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun LoginPreview() {
-    JelajahiAppTheme {
+//@Preview(name = "Sign in light theme", uiMode = Configuration.UI_MODE_NIGHT_NO)
+//@Preview(name = "Sign in dark theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
+//@Composable
+//fun LoginPreview() {
+//    JelajahiAppTheme {
 //        LoginScreen(
 //            email = null,
 //            onSignInSubmitted = { _, _ -> },
 //            onSignInAsGuest = {},
 //            onNavUp = {},
 //        )
-    }
-}
+//    }
+//}

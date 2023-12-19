@@ -19,6 +19,9 @@ interface ApiService {
     @POST("login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<ResponseLogin>
 
+    @POST("/edit")
+    suspend fun changepassword(@Body changeRequest: ChangeRequest): Response<ResponseUser>
+
     @POST("getExplore")
     suspend fun getExplore(@Body exploreRequest: ExploreRequest): Response<ResponseLocation>
 

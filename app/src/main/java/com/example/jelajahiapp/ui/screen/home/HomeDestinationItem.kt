@@ -1,8 +1,9 @@
 package com.example.jelajahiapp.ui.screen.home
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,21 +17,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -50,6 +47,7 @@ fun HomeDestinationItem(
     location: PlaceResult,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     Box(
         modifier = modifier
             .width(165.dp)
@@ -75,7 +73,7 @@ fun HomeDestinationItem(
         ){
             Column (modifier.padding(7.dp)){
                 Text(
-                    text = location.name.truncate(12),
+                    text = location.name.truncate(14),
                     overflow = TextOverflow.Ellipsis,
                     fontFamily = fonts,
                     fontWeight = FontWeight.ExtraBold,
@@ -93,7 +91,7 @@ fun HomeDestinationItem(
                     )
 
                     Text(
-                        text = (location.vicinity).truncate(13),
+                        text = (location.vicinity).truncate(17),
                         fontFamily = fonts,
                         fontWeight = FontWeight.Medium,
                         color = Color.Gray,
@@ -103,22 +101,29 @@ fun HomeDestinationItem(
                 Spacer(modifier = Modifier.height(2.dp))
                 Row (modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween){
-                    MyFavoriteIcon()
 
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .width(80.dp) // Increase the width to make the button larger
-                            .height(26.dp)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.route),
-                            fontFamily = fonts,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.White,
-                            fontSize = 9.sp // Increase the font size
+                    location?.geometry?.location?.let { location ->
+                        val geoUri = "${location.lat},${location.lng}"
+                        Button(
+                            onClick = {
+                                val uri = "http://maps.google.com/maps?q=${geoUri}"
+                                val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                                context.startActivity(mapIntent)
+                            },
+                            modifier = Modifier
+                                .width(140.dp) // Increase the width to make the button larger
+                                .height(26.dp),
+                            colors = ButtonDefaults.buttonColors(purple100)
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.route),
+                                fontFamily = fonts,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.White,
+                                fontSize = 10.sp // Increase the font size
 
-                        )
+                            )
+                        }
                     }
                 }
 
@@ -174,21 +179,3 @@ fun HomeDestinationItem(
 //        }
 //    }
 //}
-
-@Composable
-fun MyFavoriteIcon() {
-    var isFavorite by remember { mutableStateOf(false) }
-
-    val icon = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder
-
-    Icon(
-        imageVector = icon,
-        contentDescription = null,
-        tint = if (isFavorite) purple100 else purple100,
-        modifier = Modifier
-            .size(25.dp)
-            .clickable {
-                isFavorite = !isFavorite
-            }
-    )
-}

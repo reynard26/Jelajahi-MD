@@ -129,6 +129,16 @@ fun HomeScreen(
                         }) {
                             Text(text = "Logout")
                         }
+                        DropdownMenuItem(onClick = {
+                            showMenu = false
+                            navController.navigate(Screen.ChangePassword.route) {
+                                popUpTo(Screen.Login.route) {
+                                    inclusive = true
+                                }
+                            }
+                        }) {
+                            Text(text = "Change Password")
+                        }
                     }
                 }
             )
@@ -282,7 +292,10 @@ fun HomeContent(
 fun HomeDestinationContent(
     locations: List<PlaceResult>,
     navigateToDetailExplorer: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    viewModel: HomeViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(LocalContext.current)
+    ),
 ) {
     val listState = rememberLazyListState()
 
@@ -292,9 +305,12 @@ fun HomeDestinationContent(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(locations) { location ->
-                HomeDestinationItem(location = location, modifier = modifier.clickable {
-                    navigateToDetailExplorer(location.placeId)
-                }.animateItemPlacement(tween(durationMillis = 500)))
+                HomeDestinationItem(
+                    location = location,
+                    modifier = modifier.clickable {
+                        navigateToDetailExplorer(location.placeId)
+                    }.animateItemPlacement(tween(durationMillis = 500)),
+                )
             }
         }
     }

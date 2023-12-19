@@ -28,9 +28,19 @@ class UserViewModel(private val repository: JelajahiRepository) : ViewModel() {
         }
     }
 
+
+
     fun signup(userName :String, email: String, password: String) {
         viewModelScope.launch {
             repository.register(userName, email, password).collect {
+                _defaultState.value = it as Result<ResponseUser>
+            }
+        }
+    }
+
+    fun changePassword(email :String, currentPassword: String, newPassword: String) {
+        viewModelScope.launch {
+            repository.changePassword(email, currentPassword, newPassword).collect {
                 _defaultState.value = it as Result<ResponseUser>
             }
         }

@@ -1,5 +1,8 @@
 package com.example.jelajahiapp.data.location
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 
 data class ResponseLocation(
@@ -11,7 +14,13 @@ data class ResponseLocation(
     val htmlAttributions: List<String>,
     )
 
+@Entity(tableName = "locations")
+@TypeConverters(Converters::class)
 data class PlaceResult(
+
+    @PrimaryKey(autoGenerate = false)
+    @field:SerializedName("place_id")
+    val placeId: String,
 
     @field:SerializedName("geometry")
     val geometry: Location,
@@ -21,9 +30,6 @@ data class PlaceResult(
 
     @field:SerializedName("photos")
     val photos: List<Photo>?,
-
-    @field:SerializedName("place_id")
-    val placeId: String,
 
     @field:SerializedName("rating")
     val rating: Double,

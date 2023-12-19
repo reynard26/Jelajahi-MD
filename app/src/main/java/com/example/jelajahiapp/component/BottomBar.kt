@@ -45,7 +45,7 @@ fun BottomBar(
             ),
             NavItem(
                 title = stringResource(R.string.explore),
-                icon = R.drawable.baseline_travel_explore_24,
+                icon = R.drawable.baseline_explore_24,
                 screen = Screen.Explorer,
                 contentDescription = stringResource(R.string.menu_explore)
             ),
@@ -60,15 +60,15 @@ fun BottomBar(
             ),
             NavItem(
                 title = stringResource(R.string.community),
-                icon = R.drawable.baseline_comment_24,
+                icon = R.drawable.baseline_connect_without_contact_24,
                 screen = Screen.AddCommunity,
                 contentDescription = stringResource(R.string.menu_community)
             ),
             NavItem(
-                title = stringResource(R.string.liked),
-                icon = R.drawable.baseline_favorite_border_24,
-                screen = Screen.Profile,
-                contentDescription = stringResource(R.string.menu_liked)
+                title = stringResource(R.string.favorite),
+                icon = R.drawable.baseline_favorite_24,
+                screen = Screen.Favorite,
+                contentDescription = stringResource(R.string.menu_favorite)
             ),
         )
         navigationItems.map { item ->

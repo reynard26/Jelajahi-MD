@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.jelajahiapp.BuildConfig
 import com.example.jelajahiapp.R
 import com.example.jelajahiapp.component.BottomBar
 import com.example.jelajahiapp.data.ViewModelFactory
@@ -84,7 +85,7 @@ fun ExplorerScreen(
         Box(modifier = Modifier.fillMaxSize().padding(15.dp)) {
             Column(Modifier.padding(0.dp, 0.dp, 0.dp, 70.dp)) {
                 Text(
-                    text = stringResource(id = R.string.explorer),
+                    text = stringResource(id = R.string.explore),
                     fontFamily = fonts,
                     fontWeight = FontWeight.ExtraBold,
                     color = purple100,
@@ -150,8 +151,9 @@ fun LocationList(
     }
 }
 
+private const val API_KEY = BuildConfig.API_KEY
 fun buildPhotoUrl(photoReference: String, maxWidth: Int): String {
-    val apiKey = "AIzaSyDikJA_zqvlFv4heu7UnWMht7j1JOTpiN8"
+    val apiKey = API_KEY
     val baseUrl = "https://maps.googleapis.com/maps/api/place/photo"
     return "$baseUrl?maxwidth=$maxWidth&photo_reference=$photoReference&key=$apiKey"
 }

@@ -8,6 +8,8 @@ sealed class Screen(val route: String)
 
     object Home : Screen("home")
 
+    object ChangePassword : Screen("ChangePassword")
+
     object AddCommunity : Screen("addcommunity")
 
     object RecommendationActivity : Screen("recommendationActivity")
@@ -31,5 +33,9 @@ sealed class Screen(val route: String)
     object Explorer : Screen("Explorer")
     object DetailExplorer : Screen("Explorer/{placeId}") {
         fun createRoute(placeId: String) = "Explorer/$placeId"
+    }
+
+    object DetailFavorite : Screen("DetailFavorite/{placeId}") {
+        fun createRoute(placeId: String) = "DetailFavorite/$placeId"
     }
 }
