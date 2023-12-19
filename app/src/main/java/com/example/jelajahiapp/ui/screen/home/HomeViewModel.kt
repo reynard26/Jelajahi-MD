@@ -117,7 +117,6 @@ class HomeViewModel(private val repository: JelajahiRepository) : ViewModel() {
                     getRandomLocation()
                 }
             } else {
-                Log.d("loksinyamana", location.toString())
                 _locationDetails.value = location
             }
 

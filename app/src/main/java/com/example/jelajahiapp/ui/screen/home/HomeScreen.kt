@@ -2,6 +2,7 @@ package com.example.jelajahiapp.ui.screen.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -264,6 +265,7 @@ fun HomeContent(
                         modifier = Modifier
                             .clickable {
                                 navigateToDetail(culturalItem.id)
+                                Log.d("testing",(culturalItem.id).toString())
                             }
                             .animateItemPlacement(tween(durationMillis = 500))
                     )

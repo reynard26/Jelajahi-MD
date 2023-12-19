@@ -1,21 +1,25 @@
 package com.example.jelajahiapp.ui.screen.cultural
 
 import android.content.Intent
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absolutePadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,7 +27,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -41,6 +48,7 @@ import com.example.jelajahiapp.R
 import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
 import com.example.jelajahiapp.ui.screen.community.AddCommunityActivity
+import com.example.jelajahiapp.ui.screen.home.DetailHomeExplorerContent
 import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
 import com.example.jelajahiapp.ui.theme.Shapes
 import com.example.jelajahiapp.ui.theme.fonts
@@ -56,12 +64,12 @@ fun DetailCulturalScreen(
     navigateBack: () -> Unit,
 ) {
 
-    viewModel.uiState.collectAsState(initial =Result.Loading).value.let { uiState ->
-        when (uiState) {
-            is Result.Loading -> {
-                viewModel.getCulturalById(culturalId)
-            }
+    LaunchedEffect(culturalId) {
+        viewModel.getCulturalById(culturalId)
+    }
 
+    viewModel.uiState.collectAsState().value.let { uiState ->
+        when (uiState) {
             is Result.Success -> {
                 DetailContent(
                     image = uiState.data.image,
@@ -73,8 +81,15 @@ fun DetailCulturalScreen(
                 )
             }
 
-            is Result.Error -> {}
-            else -> {}
+            is Result.Error -> {
+                // Handle error state if needed
+                Log.e("DetailCulturalScreen", "Error state")
+            }
+
+            else -> {
+                // Handle other states if needed
+                Log.d("DetailCulturalScreen", "Other state: $uiState")
+            }
         }
     }
 }

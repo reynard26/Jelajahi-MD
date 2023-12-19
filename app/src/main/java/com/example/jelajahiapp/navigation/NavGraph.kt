@@ -1,5 +1,6 @@
 package com.example.jelajahiapp.navigation
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -49,20 +50,7 @@ fun NavGraph(
                 navigateToDetailExplorer = { placeId ->
                     navController.navigate(Screen.DetailHomeExplorer.createRoute(placeId))
                 }
-
             )
-        }
-
-        composable(
-            route = Screen.DetailHomeExplorer.route,
-            arguments = listOf(navArgument("placeId") { type = NavType.StringType }),
-        ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("placeId") ?: "1"
-            DetailHomeExplorerScreen(
-                placeId = id,
-            ) {
-                navController.navigateUp()
-            }
         }
 
         composable(route = Screen.Cultural.route) {
@@ -74,9 +62,19 @@ fun NavGraph(
             route = Screen.Detail.route,
             arguments = listOf(navArgument("culturalId") { type = NavType.LongType }),
         ) {
-            val id = it.arguments?.getLong("culturalId") ?: 1L
-            DetailCulturalScreen(
-                culturalId = id
+            val culturalId = it.arguments?.getLong("culturalId") ?: 1L
+            DetailCulturalScreen(culturalId = culturalId) {
+                navController.navigateUp()
+            }
+        }
+
+        composable(
+            route = Screen.DetailHomeExplorer.route,
+            arguments = listOf(navArgument("placeId") { type = NavType.StringType }),
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("placeId") ?: "1"
+            DetailHomeExplorerScreen(
+                placeId = id,
             ) {
                 navController.navigateUp()
             }

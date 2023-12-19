@@ -20,12 +20,12 @@ sealed class Screen(val route: String)
     object Profile : Screen("creator profile")
     object Favorite : Screen("favorite")
 
-    object Detail : Screen("home/{culturalId}") {
-        fun createRoute(culturalId: Long) = "home/$culturalId"
+    object Detail : Screen("detail/{culturalId}") {
+        fun createRoute(culturalId: Long) = "detail/$culturalId"
     }
 
-    object DetailHomeExplorer : Screen("home/{placeId}") {
-        fun createRoute(placeId: String) = "home/$placeId"
+    object DetailHomeExplorer : Screen("homeExplorer/{placeId}") {
+        fun createRoute(placeId: String) = "homeExplorer/$placeId"
     }
 
     object Explorer : Screen("Explorer")
