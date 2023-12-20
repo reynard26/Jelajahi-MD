@@ -166,7 +166,6 @@ fun LoginContent(
 
                 val focusRequester = remember { FocusRequester() }
 
-                // Use the provided emailState instead of creating a new one
                 Email(emailState, onImeAction = { focusRequester.requestFocus() })
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -202,7 +201,6 @@ fun LoginContent(
                         isLoginButtonClickedState -> {
                             when (loginState) {
                                 is Result.Loading -> {
-                                    // Loading state UI
                                     CircularProgressIndicator(
                                         modifier = Modifier
                                             .size(30.dp)
@@ -214,22 +212,23 @@ fun LoginContent(
                                 is Result.Success -> {
                                     val data = (loginState as? Result.Success<ResponseLogin>)?.data
                                     data?.let {
-                                        val token = data.loginResult?.token
-                                        val userId = data.loginResult?.userId
+                                        val token = data.loginResult.token
+                                        val userId = data.loginResult.userId
+                                        val email = data.loginResult.email
                                         if (!token.isNullOrBlank() && userId != null) {
                                             Toast.makeText(context, "${data.message}", Toast.LENGTH_LONG).show()
                                             isLoginButtonClickedState = false
                                             navController.navigate(Screen.Home.route)
-                                            viewModel.saveToken(token, userId)
+                                            viewModel.saveToken(token, userId, email)
                                         } else {
-                                            // Handle the case where token or userId is null or blank
+
                                         }
                                     }
                                 }
 
                                 is Result.Error -> {
                                     val errorState = loginState as? Result.Error
-                                    val serverMsg = errorState?.message ?: "An unknown error occurred" // Default message if 'message' is null
+                                    val serverMsg = errorState?.message ?: "An unknown error occurred"
                                     Toast.makeText(context, serverMsg, Toast.LENGTH_LONG).show()
                                     isLoginButtonClickedState = false
                                 }

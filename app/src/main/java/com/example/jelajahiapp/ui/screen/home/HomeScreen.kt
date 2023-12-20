@@ -131,11 +131,7 @@ fun HomeScreen(
                         }
                         DropdownMenuItem(onClick = {
                             showMenu = false
-                            navController.navigate(Screen.ChangePassword.route) {
-                                popUpTo(Screen.Login.route) {
-                                    inclusive = true
-                                }
-                            }
+                            navController.navigate(Screen.ChangePassword.route)
                         }) {
                             Text(text = "Change Password")
                         }

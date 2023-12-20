@@ -29,7 +29,6 @@ class UserViewModel(private val repository: JelajahiRepository) : ViewModel() {
     }
 
 
-
     fun signup(userName :String, email: String, password: String) {
         viewModelScope.launch {
             repository.register(userName, email, password).collect {
@@ -46,11 +45,28 @@ class UserViewModel(private val repository: JelajahiRepository) : ViewModel() {
         }
     }
 
-    fun saveToken(token: String, userId: String) {
+    fun saveToken(token: String, userId: String,email: String) {
         viewModelScope.launch {
-            repository.saveToken(token, userId)
+            repository.saveToken(token, userId, email)
         }
     }
 
+    fun setLogout(onLogoutSuccess: () -> Unit) {
+        viewModelScope.launch {
+            repository.logout()
+            onLogoutSuccess.invoke()
+        }
+    }
+
+    private val _emailFlow = MutableStateFlow<String?>(null)
+    val emailFlow: StateFlow<String?> = _emailFlow
+
+    fun fetchEmail() {
+        viewModelScope.launch {
+            repository.getEmail().collect {
+                _emailFlow.value = it
+            }
+        }
+    }
     fun getToken(): LiveData<String?> = repository.getToken().asLiveData()
 }

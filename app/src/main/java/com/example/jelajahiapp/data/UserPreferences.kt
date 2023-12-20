@@ -43,11 +43,11 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
 
     fun getToken(): Flow<String?> = flow {
         try {
-            val preferences = dataStore.data.first() // Synchronously get the current preferences
-            val token = preferences[TOKEN_KEY] ?: "" // Retrieve the token from preferences
+            val preferences = dataStore.data.first()
+            val token = preferences[TOKEN_KEY] ?: ""
             emit(token)
         } catch (e: Exception) {
-            emit(null) // Handle the error case
+            emit(null) //
         }
     }
 
@@ -57,18 +57,24 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
         }
     }
 
-    suspend fun saveUserToken(token: String, userId: String) {
-        dataStore.edit { preferences ->
-            preferences[TOKEN_KEY] = token
-            preferences[USER_ID] = userId
+    fun getEmail(): Flow<String?> = flow {
+        try {
+            val preferences = dataStore.data.first()
+            val email = preferences[EMAIL] ?: ""
+            emit(email)
+        } catch (e: Exception) {
+            emit(null) // Handle the error case
         }
     }
 
-    suspend fun deleteToken() {
+    suspend fun saveUserToken(token: String, userId: String, email: String) {
         dataStore.edit { preferences ->
-            preferences.remove(TOKEN_KEY)
+            preferences[TOKEN_KEY] = token
+            preferences[USER_ID] = userId
+            preferences[EMAIL] = email
         }
     }
+
 
     suspend fun logout() {
         dataStore.edit { preferences ->
@@ -83,6 +89,7 @@ class UserPreferences(private val dataStore: DataStore<Preferences>) {
         private var INSTANCE: UserPreferences? = null
 
         private val TOKEN_KEY = stringPreferencesKey("token")
+        private val EMAIL = stringPreferencesKey("email")
         private val USER_ID = stringPreferencesKey("userId")
         const val USER_PREF = "user_prefs"
         fun getInstance(dataStore: DataStore<Preferences>): UserPreferences {

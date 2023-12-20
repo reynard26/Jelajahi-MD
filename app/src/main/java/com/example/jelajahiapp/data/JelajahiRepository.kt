@@ -112,12 +112,14 @@ class JelajahiRepository(
     fun getToken(): Flow<String?> = userPreferences.getToken()
     fun getId(): Flow<String?> = userPreferences.getId()
 
+    fun getEmail(): Flow<String?> = userPreferences.getEmail()
+
     suspend fun getExplore(exploreRequest: ExploreRequest): Response<ResponseLocation> {
         return apiService.getExplore(exploreRequest)
     }
 
-    suspend fun saveToken(token: String, userId: String) {
-        userPreferences.saveUserToken(token, userId)
+    suspend fun saveToken(token: String, userId: String, email: String) {
+        userPreferences.saveUserToken(token, userId, email)
     }
 
     //LOCAL FOR CULTURAL

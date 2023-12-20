@@ -18,6 +18,7 @@
     <string name="show_password">Show password</string>
     <string name="hide_password">Hide password</string>
     <string name="login">Login</string>
+    <string name="save">Save</string>
     <string name="signup">Sign Up</string>
     <string name="dismiss">Dismiss</string>
     <string name="getting_started">Begin Your Exploration</string>
@@ -54,6 +55,7 @@
     <string name="take_picture">Take a Picture</string>
     <string name="switch_camera">Switch Camera</string>
     <string name="account_created">Account Created</string>
+    <string name="re_login">Please Login Again with New Password</string>
     <string name="register">Register</string>
     <string name="destination_recommendation">Destination Recommendations</string>
     <string name="liked">Destination You Liked</string>
