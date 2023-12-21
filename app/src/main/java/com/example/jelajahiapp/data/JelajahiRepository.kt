@@ -3,6 +3,7 @@ package com.example.jelajahiapp.data
 import com.example.jelajahiapp.data.location.PlaceResult
 import com.example.jelajahiapp.data.location.ResponseLocation
 import com.example.jelajahiapp.data.response.ResponseLogin
+import com.example.jelajahiapp.data.response.ResponsePredict
 import com.example.jelajahiapp.data.response.ResponseUser
 import com.example.jelajahiapp.data.retrofit.ApiService
 import com.example.jelajahiapp.data.retrofit.ChangeRequest
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
@@ -26,6 +28,7 @@ import retrofit2.Response
 
 class JelajahiRepository(
     private val apiService: ApiService,
+    private val apiServiceRecommendation: ApiService,
     private val userPreferences: UserPreferences,
     private val dataRoom: FavoriteLocationDatabase
 ) {
@@ -179,29 +182,22 @@ class JelajahiRepository(
         return dataRoom.favoriteLocationDao().allFavoritePlaces(placeId)
     }
 
-//    fun recommendation(
-//        file: MultipartBody.Part,
-//    ): Flow<Result<ResponseUser?>> = flow {
-//        emit(Result.Loading)
-//        try {
-//            val response = apiService.register(RegisterRequest(name,email, password))
-//
-//            if (response.isSuccessful) {
-//                emit(Result.Success(response.body()))
-//            } else {
-//                val errorMessage = response.errorBody()?.string()
-//                try {
-//                    val json = JSONObject(errorMessage)
-//                    val message = json.getString("message")
-//                    emit(Result.Error(message, errorMessage))
-//                } catch (e: Exception) {
-//                    emit(Result.Error("An error occurred", errorMessage))
-//                }
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            emit(Result.Error(e.message.toString()))
-//        }
-//    }.flowOn(Dispatchers.IO)
+    fun recommendation(file: MultipartBody.Part): Flow<Result<ResponsePredict?>> {
+        return flow {
+            emit(Result.Loading)
+            try {
+                val response = apiServiceRecommendation.recommendation(file)
 
+                if (response.isSuccessful) {
+                    emit(Result.Success(response.body()))
+                } else {
+                    val errorMessage = response.errorBody()?.string()
+                    emit(Result.Error("error", errorMessage))
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Result.Error(e.message.toString()))
+            }
+        }
+    }
 }

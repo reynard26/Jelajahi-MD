@@ -31,11 +31,10 @@ interface ApiService {
     @GET("allpost")
     suspend fun getCommunity(): Response<ResponseBody>
 
+
     @Multipart
     @POST("/")
-    suspend fun recommendation(
-        @Part file: MultipartBody.Part,
-    ): Response<ResponsePredict>
+    suspend fun recommendation(@Part file: MultipartBody.Part): Response<ResponsePredict>
 
 
     @Multipart

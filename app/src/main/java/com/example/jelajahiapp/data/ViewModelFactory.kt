@@ -10,6 +10,7 @@ import com.example.jelajahiapp.ui.screen.cultural.DetailCulturalViewModel
 import com.example.jelajahiapp.ui.screen.explorer.ExplorerViewModel
 import com.example.jelajahiapp.ui.screen.favorite.FavoriteViewModel
 import com.example.jelajahiapp.ui.screen.home.HomeViewModel
+import com.example.jelajahiapp.ui.screen.recommendation.RecommendationViewModel
 
 
 class ViewModelFactory private constructor(
@@ -35,6 +36,9 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(FavoriteViewModel::class.java) -> {
                 FavoriteViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(RecommendationViewModel::class.java) -> {
+                RecommendationViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

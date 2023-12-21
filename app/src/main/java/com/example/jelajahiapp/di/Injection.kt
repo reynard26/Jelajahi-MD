@@ -15,6 +15,7 @@ object Injection {
     fun getRepository(context: Context): JelajahiRepository {
         return JelajahiRepository(
             ApiConfig.getApiService(),
+            ApiConfig.getApiRecommendation(),
             UserPreferences.getInstance(dataStore = context.dataStore),
             dataRoom = FavoriteLocationDatabase.getDatabase(context)
         )

@@ -1,6 +1,6 @@
 package com.example.jelajahiapp.data.retrofit
 
-import com.example.jelajahiapp.data.response.ResponseCommunity
+import okhttp3.MultipartBody
 
 data class LoginRequest(val email: String, val password: String)
 
@@ -10,6 +10,4 @@ data class RegisterRequest(val name: String, val email: String, val password: St
 
 data class ExploreRequest(val propertyName: String)
 
-data class ResponseCommunityList(
-    val communities: List<ResponseCommunity>
-)
+data class RecommendationRequest(val file: MultipartBody.Part)
