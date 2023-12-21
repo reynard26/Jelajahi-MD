@@ -8,7 +8,7 @@ private fun isUsernameValid(username: String): Boolean {
 
 @Suppress("UNUSED_PARAMETER")
 private fun usernameValidationError(username: String): String {
-    return "Invalid username"
+    return "Invalid name"
 }
 
 class UsernameState : TextFieldState(validator = ::isUsernameValid, errorFor = ::usernameValidationError)

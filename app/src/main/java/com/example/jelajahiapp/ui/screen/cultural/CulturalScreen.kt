@@ -145,7 +145,7 @@ fun CulturalContent(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(160.dp),
+                    columns = GridCells.Adaptive(130.dp),
                     contentPadding = PaddingValues(1.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),

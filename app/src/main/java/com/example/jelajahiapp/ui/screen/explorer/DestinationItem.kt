@@ -74,7 +74,7 @@ fun DestinationItem(
             )
 
             Text(
-                text = (location.vicinity).truncate(16),
+                text = location.vicinity.truncate(16),
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Bold,
                 color = Color.Gray,

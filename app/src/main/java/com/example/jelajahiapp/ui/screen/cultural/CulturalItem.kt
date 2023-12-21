@@ -59,7 +59,7 @@ fun CulturalItem(
             Icon(
                 imageVector = Icons.Default.Place,
                 contentDescription = null,
-                tint = Color.Gray,
+                tint = purple100,
                 modifier = modifier
                     .size(20.dp)
             )

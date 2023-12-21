@@ -5,11 +5,13 @@ sealed class Screen(val route: String)
     object Welcome : Screen("onboarding")
 
     object Login : Screen("login")
+    object Register : Screen("register")
 
     object Home : Screen("home")
 
     object ChangePassword : Screen("ChangePassword")
 
+    object Community : Screen("Community")
     object AddCommunity : Screen("addcommunity")
 
     object RecommendationActivity : Screen("recommendationActivity")
@@ -17,10 +19,6 @@ sealed class Screen(val route: String)
 
 
     object Cultural : Screen("cultural")
-
-    object Register : Screen("register")
-    object Profile : Screen("creator profile")
-    object Favorite : Screen("favorite")
 
     object Detail : Screen("detail/{culturalId}") {
         fun createRoute(culturalId: Long) = "detail/$culturalId"
@@ -35,7 +33,5 @@ sealed class Screen(val route: String)
         fun createRoute(placeId: String) = "Explorer/$placeId"
     }
 
-    object DetailFavorite : Screen("DetailFavorite/{placeId}") {
-        fun createRoute(placeId: String) = "DetailFavorite/$placeId"
-    }
+    object Favorite : Screen("favorite")
 }

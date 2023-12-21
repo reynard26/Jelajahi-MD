@@ -73,7 +73,7 @@ fun HomeDestinationItem(
         ){
             Column (modifier.padding(7.dp)){
                 Text(
-                    text = location.name.truncate(14),
+                    text = location.name.truncate(12),
                     overflow = TextOverflow.Ellipsis,
                     fontFamily = fonts,
                     fontWeight = FontWeight.ExtraBold,

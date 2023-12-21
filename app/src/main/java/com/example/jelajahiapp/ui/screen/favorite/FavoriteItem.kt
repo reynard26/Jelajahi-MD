@@ -68,7 +68,7 @@ fun FavoriteItem(
             val imageUrl = buildPhotoUrl(it.photoReference, maxWidth = 200) // Set your desired maxWidth
             Image(
                 painter = rememberImagePainter(data = imageUrl),
-                contentDescription = name,
+                contentDescription = name.truncate(15),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .width(75.dp)
@@ -94,7 +94,7 @@ fun FavoriteItem(
                 Icon(
                     imageVector = Icons.Default.Place,
                     contentDescription = null,
-                    tint = grey40,
+                    tint = purple100,
                     modifier = modifier
                         .size(20.dp)
                 )

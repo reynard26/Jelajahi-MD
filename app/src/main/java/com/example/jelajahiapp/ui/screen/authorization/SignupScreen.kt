@@ -32,7 +32,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,7 +40,6 @@ import com.example.jelajahiapp.R
 import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
 import com.example.jelajahiapp.navigation.Screen
-import com.example.jelajahiapp.ui.screen.authorization.component.ButtonGoogle
 import com.example.jelajahiapp.ui.screen.authorization.component.Email
 import com.example.jelajahiapp.ui.screen.authorization.component.EmailState
 import com.example.jelajahiapp.ui.screen.authorization.component.Password
@@ -231,24 +229,6 @@ fun SignupContent(
                         )
                     }
                 }
-            }
-            Text(
-                text = stringResource(id = R.string.or),
-                fontFamily = fonts,
-                fontWeight = FontWeight.Medium,
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            ButtonGoogle(
-                text = stringResource(id = R.string.sign_up_google),
-                loadingText = stringResource(id = R.string.loading_up_google),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            ) {
-
             }
         }
     }

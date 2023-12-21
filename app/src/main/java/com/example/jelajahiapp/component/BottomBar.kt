@@ -59,10 +59,10 @@ fun BottomBar(
                 }
             ),
             NavItem(
-                title = stringResource(R.string.community),
+                title = stringResource(R.string.forum),
                 icon = R.drawable.baseline_connect_without_contact_24,
-                screen = Screen.AddCommunity,
-                contentDescription = stringResource(R.string.menu_community)
+                screen = Screen.Community,
+                contentDescription = stringResource(R.string.menu_forum)
             ),
             NavItem(
                 title = stringResource(R.string.favorite),

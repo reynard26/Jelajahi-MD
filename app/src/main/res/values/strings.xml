@@ -6,15 +6,16 @@
     <string name="menu_explore">Explore Menu</string>
     <string name="camera">Camera</string>
     <string name="menu_camera">Camera Menu</string>
-    <string name="community">Community</string>
-    <string name="menu_community">Community Menu</string>
+    <string name="jelajahi_community">JelajahI Community</string>
+    <string name="forum">Forum</string>
+    <string name="menu_forum">Forum Menu</string>
     <string name="favorite">Favorite</string>
     <string name="menu_favorite">Favorite Menu</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="new_password">New Password</string>
     <string name="current_pasword">Current Password</string>
-    <string name="username">Username</string>
+    <string name="name">name</string>
     <string name="show_password">Show password</string>
     <string name="hide_password">Hide password</string>
     <string name="login">Login</string>
@@ -61,6 +62,7 @@
     <string name="liked">Destination You Liked</string>
     <string name="explorer_indonesian">Explore Indonesian Cultural Heritages</string>
     <string name="discover_indonesiaan">Discover Indonesian Cultural Destinations</string>
+    <string name="share_connect">Share and connect with fellow #Penjelajah!</string>
     <string name="clear">clear</string>
     <string name="search_location">Search Location</string>
     <string name="back">Back</string>

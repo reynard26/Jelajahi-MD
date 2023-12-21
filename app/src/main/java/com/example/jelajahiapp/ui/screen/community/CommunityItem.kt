@@ -10,34 +10,27 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jelajahiapp.R
-import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
+import com.example.jelajahiapp.data.response.ResponseCommunity
 import com.example.jelajahiapp.ui.theme.Shapes
 import com.example.jelajahiapp.ui.theme.green87
-import com.example.jelajahiapp.ui.theme.grey10
 import com.example.jelajahiapp.ui.theme.grey40
 import com.example.jelajahiapp.ui.theme.purple100
 
 @Composable
 fun CommunityItem(
-    imagePlace: Int,
-    placeName: String,
-    nameUser: String,
-    description: String,
+    postCommunity: ResponseCommunity,
     modifier: Modifier = Modifier,
 ){
     Row(
@@ -55,14 +48,14 @@ fun CommunityItem(
                 .padding(2.dp)){
 
             Text(
-                text = placeName,
+                text = postCommunity.placeName?: "",
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
             )
             Spacer(modifier = Modifier.height(1.dp))
             Text(
-                text = nameUser,
+                text = postCommunity.location?: "",
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
@@ -70,7 +63,7 @@ fun CommunityItem(
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = description,
+                text = postCommunity.description?: "",
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.Normal,
                 fontSize = 13.sp,
@@ -78,8 +71,8 @@ fun CommunityItem(
             )
         }
         Image(
-            painter = painterResource(imagePlace),
-            contentDescription = placeName,
+            painter = painterResource(R.drawable.logo),
+            contentDescription = postCommunity.placeName?: "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .width(130.dp)
@@ -87,14 +80,14 @@ fun CommunityItem(
                 .clip(Shapes.medium))
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun ItemPreview(){
-    JelajahiAppTheme {
-        CommunityItem(
-            imagePlace = R.drawable.foto1,
-            placeName = "Batik Rakyat ",
-            nameUser = "Issabelle Duchman",
-            description = "lorem ipsumk sakdasnd ajsndjan sdjans jnasdjn asjdna jdna sjndajsnd ajsnd ajsnd jasndjasndj asn sasd asd adasdadas dasadas sdadas dada dadsas dadas a dsa sda da sda sd asd asd asd a da ssda sda da sda sd asd asd as das sdas das ")
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ItemPreview(){
+//    JelajahiAppTheme {
+//        CommunityItem(
+//            imagePlace = R.drawable.foto1,
+//            placeName = "Batik Rakyat ",
+//            location = "Issabelle Duchman",
+//            description = "lorem ipsumk sakdasnd ajsndjan sdjans jnasdjn asjdna jdna sjndajsnd ajsnd ajsnd jasndjasndj asn sasd asd adasdadas dasadas sdadas dada dadsas dadas a dsa sda da sda sd asd asd asd a da ssda sda da sda sd asd asd as das sdas das ")
+//    }
+//}

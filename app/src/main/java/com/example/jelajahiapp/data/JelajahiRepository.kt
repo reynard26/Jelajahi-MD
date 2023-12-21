@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
@@ -118,6 +119,8 @@ class JelajahiRepository(
         return apiService.getExplore(exploreRequest)
     }
 
+    suspend fun getCommunity(): Response<ResponseBody> = apiService.getCommunity()
+
     suspend fun saveToken(token: String, userId: String, email: String) {
         userPreferences.saveUserToken(token, userId, email)
     }
@@ -175,5 +178,30 @@ class JelajahiRepository(
     fun isFavoritePlaces(placeId: String): Flow<Boolean> {
         return dataRoom.favoriteLocationDao().allFavoritePlaces(placeId)
     }
+
+//    fun recommendation(
+//        file: MultipartBody.Part,
+//    ): Flow<Result<ResponseUser?>> = flow {
+//        emit(Result.Loading)
+//        try {
+//            val response = apiService.register(RegisterRequest(name,email, password))
+//
+//            if (response.isSuccessful) {
+//                emit(Result.Success(response.body()))
+//            } else {
+//                val errorMessage = response.errorBody()?.string()
+//                try {
+//                    val json = JSONObject(errorMessage)
+//                    val message = json.getString("message")
+//                    emit(Result.Error(message, errorMessage))
+//                } catch (e: Exception) {
+//                    emit(Result.Error("An error occurred", errorMessage))
+//                }
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            emit(Result.Error(e.message.toString()))
+//        }
+//    }.flowOn(Dispatchers.IO)
 
 }

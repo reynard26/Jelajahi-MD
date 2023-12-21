@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.example.jelajahiapp.ui.screen.authorization.ChangePasswordScreen
 import com.example.jelajahiapp.ui.screen.authorization.LoginScreen
 import com.example.jelajahiapp.ui.screen.authorization.SignupScreen
+import com.example.jelajahiapp.ui.screen.community.CommunityScreen
 import com.example.jelajahiapp.ui.screen.cultural.CulturalScreen
 import com.example.jelajahiapp.ui.screen.cultural.DetailCulturalScreen
 import com.example.jelajahiapp.ui.screen.explorer.DetailExplorerScreen
@@ -90,6 +91,10 @@ fun NavGraph(
             RecommendationActivity()
         }
 
+
+        composable(route = Screen.Community.route) {
+            CommunityScreen(navController = navController)
+        }
 
         composable(route = Screen.AddCommunity.route) {
 //            CommunityScreen(navController = navController)

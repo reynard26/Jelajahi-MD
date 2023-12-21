@@ -167,7 +167,7 @@ fun DetailHomeExplorerContent(
                         } else {
                             stringResource(R.string.add_favorite)
                         },
-
+                        tint = purple100
                         )
                 }
                 Box(

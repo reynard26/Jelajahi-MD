@@ -21,6 +21,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BASE_URL", "\"https://ch2-ps431-jelajahi-production.up.railway.app/\"")
         buildConfigField("String", "API_KEY", "\"AIzaSyDikJA_zqvlFv4heu7UnWMht7j1JOTpiN8\"")
+        buildConfigField("String", "RECOMMENDATION_URL", "\"https://predict-model-jelajahi-rlr4zz5hfa-et.a.run.app/\"")
 
         vectorDrawables {
             useSupportLibrary = true
