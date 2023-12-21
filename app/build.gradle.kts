@@ -80,11 +80,14 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation ("androidx.compose.ui:ui:1.0.5")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("androidx.compose.material:material-icons-extended:1.5.4")
-    implementation ("io.coil-kt:coil-compose:1.4.0")
+    implementation ("io.coil-kt:coil-compose:2.5.0")
 
     implementation ("androidx.compose.runtime:runtime-livedata:1.3.3")
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
     //testing
     testImplementation ("junit:junit:4.13.2")

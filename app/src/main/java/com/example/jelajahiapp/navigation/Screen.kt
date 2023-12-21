@@ -16,6 +16,8 @@ sealed class Screen(val route: String)
 
     object RecommendationActivity : Screen("recommendationActivity")
 
+    object RecommendationResult : Screen("RecommendationResult")
+
 
 
     object Cultural : Screen("cultural")

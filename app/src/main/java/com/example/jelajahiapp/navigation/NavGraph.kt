@@ -18,7 +18,7 @@ import com.example.jelajahiapp.ui.screen.explorer.ExplorerScreen
 import com.example.jelajahiapp.ui.screen.favorite.FavoriteScreen
 import com.example.jelajahiapp.ui.screen.home.DetailHomeExplorerScreen
 import com.example.jelajahiapp.ui.screen.home.HomeScreen
-import com.example.jelajahiapp.ui.screen.recommendation.RecommendationActivity
+import com.example.jelajahiapp.ui.screen.recommendation.RecommendationScreen
 import com.example.jelajahiapp.ui.screen.splash.OnBoardingScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -88,8 +88,13 @@ fun NavGraph(
 
 
         composable(route = Screen.RecommendationActivity.route) {
-            RecommendationActivity()
+            RecommendationScreen(navController = navController)
         }
+
+        composable(route = Screen.RecommendationResult.route) {
+//            DetailRecommendationContent(navController = navController)
+        }
+
 
 
         composable(route = Screen.Community.route) {

@@ -21,16 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomSplashScreenTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".ui.screen.recommendation.RecommendationActivity"
-            android:theme="@style/Theme.JelajahiApp"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -43,8 +34,13 @@
             android:theme="@style/Theme.JelajahiApp" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.CustomSplashScreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

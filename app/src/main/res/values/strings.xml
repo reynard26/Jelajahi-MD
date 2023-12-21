@@ -62,11 +62,16 @@
     <string name="liked">Destination You Liked</string>
     <string name="explorer_indonesian">Explore Indonesian Cultural Heritages</string>
     <string name="discover_indonesiaan">Discover Indonesian Cultural Destinations</string>
-    <string name="share_connect">Share and connect with fellow #Penjelajah!</string>
+    <string name="share_connect">Share and Connect with Fellow #Penjelajah!</string>
     <string name="clear">clear</string>
     <string name="search_location">Search Location</string>
     <string name="back">Back</string>
     <string name="add_favorite">Add to Favorite</string>
     <string name="remove_favorite">Remove to Favorite</string>
     <string name="user_total_ratings">(%1$s)</string>
+    <string name="culture_identification">Culture Identification</string>
+    <string name="capture_get">Capture and Get Cultural Travel Recommendation</string>
+
+
+
 </resources>

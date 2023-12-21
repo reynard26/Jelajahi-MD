@@ -17,7 +17,7 @@ class RecommendationViewModel(private val repository: JelajahiRepository) : View
     val recommendationState: StateFlow<Result<ResponsePredict>> get() = _recommendationState
 
 
-    fun recommendation(file: MultipartBody.Part) {
+    fun recommendation(file: MultipartBody.Part, onUploadSuccess: () -> Unit, onUploadError: () -> Unit) {
         viewModelScope.launch {
             try {
                 Log.d("hasildariview", "Before emitting state")
@@ -26,11 +26,12 @@ class RecommendationViewModel(private val repository: JelajahiRepository) : View
                         when (result) {
                             is Result.Success -> {
                                 _recommendationState.value = result as Result<ResponsePredict>
-                                Log.d("hasildariview", result.data.toString())
+                                onUploadSuccess()
                             }
                             is Result.Error -> {
                                 _recommendationState.value = result
                                 result.error?.let {
+                                    onUploadError()
                                 }
                             }
                             Result.Loading -> {

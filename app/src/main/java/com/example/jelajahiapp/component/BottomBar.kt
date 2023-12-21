@@ -1,6 +1,5 @@
 package com.example.jelajahiapp.component
 
-import android.content.Intent
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -19,7 +18,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jelajahiapp.R
 import com.example.jelajahiapp.navigation.NavItem
 import com.example.jelajahiapp.navigation.Screen
-import com.example.jelajahiapp.ui.screen.recommendation.RecommendationActivity
 import com.example.jelajahiapp.ui.theme.green87
 import com.example.jelajahiapp.ui.theme.purple100
 
@@ -54,9 +52,6 @@ fun BottomBar(
                 icon = R.drawable.baseline_photo_camera_24,
                 screen = Screen.RecommendationActivity,
                 contentDescription = stringResource(R.string.menu_camera),
-                onClick = {
-                    context.startActivity(Intent(context, RecommendationActivity::class.java))
-                }
             ),
             NavItem(
                 title = stringResource(R.string.forum),
