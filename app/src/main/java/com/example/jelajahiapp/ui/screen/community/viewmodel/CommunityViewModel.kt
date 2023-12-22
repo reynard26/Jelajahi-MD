@@ -14,8 +14,6 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 
@@ -55,17 +53,26 @@ class CommunityViewModel(private val repository: JelajahiRepository) : ViewModel
 
     fun getId(): LiveData<String?> = repository.getId().asLiveData()
 
-    fun addCommunity(
-        token: String,
-        imageFile: MultipartBody.Part,
-        description: RequestBody,
-        lat: Float?,
-        lon: Float?
-    ) {
-//        viewModelScope.launch {
-//            repository.login(email, password).collect {
-//                _defaultState.value = it as Result<ResponseLogin>
-//            }
-//        }
+    fun addCommunityPost(place_name :String, location: String, description: String) {
+        viewModelScope.launch {
+            repository.addCommunityPost(place_name, location, description).collect {
+                _defaultState.value = it as Result<ResponseUser>
+            }
+        }
+    }
+
+    fun editCommunityPost(id: Long, place_name: String, description: String, location: String) {
+        viewModelScope.launch {
+            repository.editCommunityPost(id, place_name, description, location).collect {
+                _defaultState.value = it as Result<ResponseUser>
+            }
+        }
+    }
+
+    private val _selectedCommunity = MutableStateFlow<ResponseCommunity?>(null)
+    val selectedCommunity: StateFlow<ResponseCommunity?> get() = _selectedCommunity
+
+    fun selectCommunityForEdit(community: ResponseCommunity) {
+        _selectedCommunity.value = community
     }
 }

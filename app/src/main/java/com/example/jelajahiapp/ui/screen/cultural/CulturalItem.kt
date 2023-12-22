@@ -63,7 +63,6 @@ fun CulturalItem(
                 modifier = modifier
                     .size(20.dp)
             )
-
             Text(
                 text = location,
                 overflow = TextOverflow.Ellipsis,

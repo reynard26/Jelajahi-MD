@@ -24,11 +24,14 @@ import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,7 +50,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jelajahiapp.R
 import com.example.jelajahiapp.component.BottomBar
+import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
+import com.example.jelajahiapp.data.response.ResponsePredict
 import com.example.jelajahiapp.navigation.Screen
 import com.example.jelajahiapp.ui.screen.community.reduceFileImage
 import com.example.jelajahiapp.ui.screen.community.uriToFile
@@ -55,6 +60,7 @@ import com.example.jelajahiapp.ui.theme.Shapes
 import com.example.jelajahiapp.ui.theme.fonts
 import com.example.jelajahiapp.ui.theme.green87
 import com.example.jelajahiapp.ui.theme.purple100
+import com.example.jelajahiapp.ui.theme.white100
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -129,19 +135,17 @@ fun CameraScreen(
                         selectedImageUri = uri
                     }
                 )
-                selectedImageUri?.let { uri ->
-                    // Automatically trigger UploadImageSection
-                    UploadImageSection(
-                        selectedImageUri = uri,
-                        onUploadSuccess = {
-                        },
-                        onUploadError = {
-                        }
-                    )
-                }
             }
         }
     }
+
+    // Display the UploadImageSection outside the CameraScreen
+    UploadImageSection(
+        selectedImageUri = selectedImageUri,
+        onUploadSuccess = {},
+        onUploadError = {},
+        navController = navController
+    )
 }
 
 
@@ -248,19 +252,54 @@ fun UploadImageSection(
         factory = ViewModelFactory.getInstance(LocalContext.current)
     ),
     onUploadSuccess: () -> Unit,
-    onUploadError: () -> Unit
+    onUploadError: () -> Unit,
+    navController: NavHostController
 ) {
-    if (selectedImageUri == null) {
-        Text(text = "Please select an image")
-    } else {
-        val imageFile = uriToFile(selectedImageUri, LocalContext.current)?.reduceFileImage()
+    // Local state for name
+    var name by remember { mutableStateOf<String?>(null) }
 
-        if (imageFile != null && imageFile.exists()) {
-            val requestImageFile = imageFile.asRequestBody("image/*".toMediaType())
-            val imageMultipart = MultipartBody.Part.createFormData("file", imageFile.name, requestImageFile)
-            viewModel.recommendation(imageMultipart, onUploadSuccess, onUploadError)
+    val recommendation by viewModel.recommendationState.collectAsState()
+
+    // Observe changes in 'name' and trigger recomposition
+    LaunchedEffect(name) {
+        name?.let {
+            navController.navigate("${Screen.RecommendationResult.route}/$it")
+        }
+    }
+
+    Box {
+        if (selectedImageUri == null) {
         } else {
-            onUploadError()
+            val imageFile = uriToFile(selectedImageUri, LocalContext.current)?.reduceFileImage()
+
+            if (imageFile != null && imageFile.exists()) {
+                val requestImageFile = imageFile.asRequestBody("image/*".toMediaType())
+                val imageMultipart =
+                    MultipartBody.Part.createFormData("file", imageFile.name, requestImageFile)
+                viewModel.recommendation(imageMultipart, onUploadSuccess, onUploadError)
+                when (recommendation) {
+                    is Result.Loading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(30.dp)
+                                .padding(4.dp),
+                            color = white100
+                        )
+                    }
+
+                    is Result.Success -> {
+                        val data = (recommendation as? Result.Success<ResponsePredict>)?.data
+                        data?.let {
+                            name = data.predictResult?.name
+                        }
+                    }
+
+                    else -> {
+                    }
+                }
+            } else {
+                onUploadError()
+            }
         }
     }
 }

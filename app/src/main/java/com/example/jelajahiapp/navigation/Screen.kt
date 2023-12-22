@@ -14,9 +14,13 @@ sealed class Screen(val route: String)
     object Community : Screen("Community")
     object AddCommunity : Screen("addcommunity")
 
+    object EditCommunity : Screen("editcommunity")
+
     object RecommendationActivity : Screen("recommendationActivity")
 
-    object RecommendationResult : Screen("RecommendationResult")
+    object RecommendationResult : Screen("RecommendationResult/{name}") {
+        const val ARG_NAME = "name"
+    }
 
 
 

@@ -60,6 +60,7 @@ fun ExplorerScreen(
 
     var searchText by remember { mutableStateOf("") }
 
+
     val filteredLocations by viewModel.filteredLocations.collectAsState()
 
     val lastItemPosition = remember { mutableStateOf(0) }

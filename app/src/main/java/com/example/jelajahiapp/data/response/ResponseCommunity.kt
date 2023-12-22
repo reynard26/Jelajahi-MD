@@ -3,6 +3,10 @@ package com.example.jelajahiapp.data.response
 import com.google.gson.annotations.SerializedName
 
 data class ResponseCommunity(
+
+    @field:SerializedName("id")
+    val id: Long? = null,
+
     @field:SerializedName("placeName")
     val placeName: String? = null,
 

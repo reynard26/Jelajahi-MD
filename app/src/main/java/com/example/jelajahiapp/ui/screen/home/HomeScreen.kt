@@ -24,6 +24,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,14 +34,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -55,6 +58,7 @@ import com.example.jelajahiapp.component.BottomBar
 import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.ViewModelFactory
 import com.example.jelajahiapp.data.location.PlaceResult
+import com.example.jelajahiapp.data.response.ResponseCommunity
 import com.example.jelajahiapp.data.room.Cultural
 import com.example.jelajahiapp.navigation.Screen
 import com.example.jelajahiapp.ui.screen.community.HomeCommunityItem
@@ -81,10 +85,16 @@ fun HomeScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val locations by viewModel.locations.collectAsState(emptyList())
+    val community by viewModel.communityList.collectAsState(emptyList())
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.getRandomLocation()
+    }
+
+    DisposableEffect(Unit) {
+        viewModel.getCommunity()
+        onDispose { }
     }
 
     Scaffold(
@@ -158,10 +168,10 @@ fun HomeScreen(
                         Text(text = stringResource(id = R.string.travel_references), fontFamily = fonts, fontWeight = FontWeight.Bold, color = white100, fontSize = 16.sp)
                         Spacer(modifier = Modifier.height(5.dp))
                         Text(text = stringResource(id = R.string.capture_your), fontFamily = fonts, color = white100, fontSize = 12.sp)
-//                        Button(onClick = { context.startActivity(Intent(context, RecommendationActivity::class.java)) },
-//                            colors = ButtonDefaults.buttonColors(Color.White)) {
-//                            Text(text = stringResource(id = R.string.capture_image), color = purple100)
-//                        }
+                        Button(onClick = { navController.navigate(Screen.RecommendationActivity.route) },
+                            colors = ButtonDefaults.buttonColors(Color.White)) {
+                            Text(text = stringResource(id = R.string.capture_image), color = purple100)
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
@@ -230,10 +240,10 @@ fun HomeScreen(
                     Text(stringResource(id = R.string.community_stories), fontFamily = fonts, fontWeight = FontWeight.Bold, color = green87, fontSize = 22.sp)
                     Text(stringResource(id = R.string.see_all), fontFamily = fonts, color = purple100, fontSize = 13.sp, modifier = Modifier
                         .padding(0.dp, 5.dp, 0.dp, 0.dp)
-                        .clickable { navController.navigate(Screen.Cultural.route) })
+                        .clickable { navController.navigate(Screen.Community.route) })
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                HomeCommunityContent(modifier = modifier.fillMaxWidth())
+                HomeCommunityContent(community = community, modifier = modifier.fillMaxWidth())
                 Spacer(modifier = Modifier.height(70.dp))
             }
         }
@@ -311,26 +321,20 @@ fun HomeDestinationContent(
 
 @Composable
 fun HomeCommunityContent(
-    modifier: Modifier
+    modifier: Modifier,
+    community: List<ResponseCommunity>
 ) {
-    val scope = rememberCoroutineScope()
-    val listState = rememberLazyListState()
-
-    Box(modifier = modifier) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .testTag("CulturalList")
-            ) {
-                    HomeCommunityItem(
-                        placeName = "Batik Rakyat Magelang",
-                        image = R.drawable.lasem,
-                        description = stringResource(R.string.capture_your).truncate(230),
-                        modifier = Modifier
-                    )
-            }
+    Box(modifier = modifier.fillMaxSize()) {
+        if (community.isNotEmpty()) {
+            val communityItem = community.first() // Display the first item
+            HomeCommunityItem(
+                community = communityItem,
+                modifier = Modifier
+            )
+        } else {
+            // Handle the case where the community list is empty
+            Text(text = "No community items available")
+        }
     }
 }
 

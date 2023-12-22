@@ -71,7 +71,7 @@ fun CommunityItem(
             )
         }
         Image(
-            painter = painterResource(R.drawable.logo),
+            painter = painterResource(R.drawable.icononly),
             contentDescription = postCommunity.placeName?: "",
             contentScale = ContentScale.Crop,
             modifier = Modifier

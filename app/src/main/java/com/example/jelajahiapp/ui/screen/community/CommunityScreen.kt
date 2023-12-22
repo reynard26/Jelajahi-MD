@@ -13,8 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,8 +45,8 @@ import com.example.jelajahiapp.ui.screen.community.viewmodel.CommunityViewModel
 import com.example.jelajahiapp.ui.theme.fonts
 import com.example.jelajahiapp.ui.theme.purple100
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommunityScreen(
     navController: NavHostController,
@@ -51,7 +55,6 @@ fun CommunityScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-
     DisposableEffect(Unit) {
         viewModel.getCommunity()
         onDispose { }
@@ -59,6 +62,8 @@ fun CommunityScreen(
 
     val allpostCommunity = viewModel.communityList.collectAsState().value
 
+    // Observe the selected community post
+    val selectedCommunity by viewModel.selectedCommunity.collectAsState()
 
     Scaffold(
         bottomBar = {
@@ -86,9 +91,22 @@ fun CommunityScreen(
                 if (viewModel.isLoading.value) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 }
-                CommunityList(postCommunity = allpostCommunity) { clickedItem -> }
+                CommunityList(postCommunity = allpostCommunity, viewModel = viewModel)
                 Spacer(modifier = Modifier.height(10.dp))
             }
+            FloatingActionButton(
+                onClick = {  navController.navigate(Screen.AddCommunity.route) },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(0.dp,16.dp,8.dp,80.dp)
+            ) {
+                Icon(Icons.Filled.Add, "Floating action button.")
+            }
+//            selectedCommunity?.let { community ->
+//                val communityJson = Gson().toJson(community)
+//                val encodedCommunity = Uri.encode(communityJson)
+//                navController.navigate("${Screen.EditCommunity.route}/$encodedCommunity")
+//            }
         }
     }
 }
@@ -97,7 +115,7 @@ fun CommunityScreen(
 @Composable
 fun CommunityList(
     postCommunity: List<ResponseCommunity>,
-    onItemClick: (ResponseCommunity) -> Unit
+    viewModel: CommunityViewModel
 ) {
     LazyColumn(
         contentPadding = PaddingValues(1.dp),
@@ -108,7 +126,7 @@ fun CommunityList(
             CommunityItem(
                 postCommunity = post,
                 modifier = Modifier.clickable {
-                    onItemClick(post)
+//                    viewModel.selectCommunityForEdit(post)
                 }
             )
         }

@@ -7,12 +7,14 @@ import com.example.jelajahiapp.data.response.ResponsePredict
 import com.example.jelajahiapp.data.response.ResponseUser
 import com.example.jelajahiapp.data.retrofit.ApiService
 import com.example.jelajahiapp.data.retrofit.ChangeRequest
+import com.example.jelajahiapp.data.retrofit.CommunityRequestPost
 import com.example.jelajahiapp.data.retrofit.ExploreRequest
 import com.example.jelajahiapp.data.retrofit.LoginRequest
 import com.example.jelajahiapp.data.retrofit.RegisterRequest
 import com.example.jelajahiapp.data.room.Cultural
 import com.example.jelajahiapp.data.room.FakeCulturalDataSource
 import com.example.jelajahiapp.data.room.FavoriteLocationDatabase
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -124,6 +126,7 @@ class JelajahiRepository(
 
     suspend fun getCommunity(): Response<ResponseBody> = apiService.getCommunity()
 
+
     suspend fun saveToken(token: String, userId: String, email: String) {
         userPreferences.saveUserToken(token, userId, email)
     }
@@ -157,6 +160,13 @@ class JelajahiRepository(
             cultural.id == culturalId
         }
     }
+
+    fun getCulturalByName(nameCultural: String): Cultural {
+        return listCultural.first { cultural ->
+            cultural.culturalName == nameCultural
+        }
+    }
+
     suspend fun logout() {
         userPreferences.logout()
     }
@@ -193,6 +203,63 @@ class JelajahiRepository(
                 } else {
                     val errorMessage = response.errorBody()?.string()
                     emit(Result.Error("error", errorMessage))
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Result.Error(e.message.toString()))
+            }
+        }
+    }
+
+    suspend fun addCommunityPost(
+        place_name:String,
+        description: String,
+        location: String,
+    ): Flow<Result<ResponseUser?>> {
+        return flow {
+            emit(Result.Loading)
+            try {
+                val response = apiService.addCommunityPost(CommunityRequestPost(place_name, location, description))
+                if (response.isSuccessful) {
+                    emit(Result.Success(response.body()))
+                } else {
+                    val errorMessage = response.errorBody()?.string()
+                    try {
+                        val json = JSONObject(errorMessage.toString())
+                        val serverMsg = json.getString("msg")
+                        emit(Result.Error(serverMsg, errorMessage))
+                    } catch (e: JSONException) {
+                        // Handle JSON parsing error, show a default message, or take appropriate action
+                        emit(Result.Error("An error occurred", errorMessage))
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Result.Error(e.message.toString()))
+            }
+        }
+    }
+
+    suspend fun editCommunityPost(id: Long, place_name: String, description: String, location: String): Flow<Result<ResponseUser?>> {
+        return flow {
+            emit(Result.Loading)
+            try {
+                val response = apiService.editCommunityPost(id, CommunityRequestPost(place_name, location, description))
+                if (response.isSuccessful) {
+                    val responseBody = response.body()?.string() ?: ""
+                    val gson = Gson()
+                    val responseUser: ResponseUser = gson.fromJson(responseBody, ResponseUser::class.java)
+                    emit(Result.Success(responseUser))
+                } else {
+                    val errorMessage = response.errorBody()?.string()
+                    try {
+                        val json = JSONObject(errorMessage.toString())
+                        val serverMsg = json.getString("msg")
+                        emit(Result.Error(serverMsg, errorMessage))
+                    } catch (e: JSONException) {
+                        // Handle JSON parsing error, show a default message, or take appropriate action
+                        emit(Result.Error("An error occurred", errorMessage))
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

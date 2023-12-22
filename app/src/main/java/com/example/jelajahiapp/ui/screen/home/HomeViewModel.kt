@@ -1,5 +1,6 @@
 package com.example.jelajahiapp.ui.screen.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -7,14 +8,19 @@ import androidx.lifecycle.viewModelScope
 import com.example.jelajahiapp.data.JelajahiRepository
 import com.example.jelajahiapp.data.Result
 import com.example.jelajahiapp.data.location.PlaceResult
+import com.example.jelajahiapp.data.response.ResponseCommunity
 import com.example.jelajahiapp.data.retrofit.ExploreRequest
 import com.example.jelajahiapp.data.room.Cultural
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 class HomeViewModel(private val repository: JelajahiRepository) : ViewModel() {
 
@@ -40,6 +46,9 @@ class HomeViewModel(private val repository: JelajahiRepository) : ViewModel() {
 
     private val _isLoadingDetails = MutableStateFlow(false)
     val isLoadingDetails: StateFlow<Boolean> get() = _isLoadingDetails
+
+    private val _communityList = MutableStateFlow<List<ResponseCommunity>>(emptyList())
+    val communityList: StateFlow<List<ResponseCommunity>> get() = _communityList
 
 
     fun getToken(): LiveData<String?> = repository.getToken().asLiveData()
@@ -141,6 +150,31 @@ class HomeViewModel(private val repository: JelajahiRepository) : ViewModel() {
             }
 
             _favoritePlaceStatus.value = !_favoritePlaceStatus.value
+        }
+    }
+
+    fun getCommunity() = viewModelScope.launch {
+        _isLoading.value = true
+        try {
+            val response: Response<ResponseBody> = repository.getCommunity()
+            if (response.isSuccessful) {
+                val responseBodyString = response.body()?.string() ?: ""
+                val gson = Gson()
+                val communityList: List<ResponseCommunity> = gson.fromJson(responseBodyString, object : TypeToken<List<ResponseCommunity>>() {}.type)
+
+                // Check if the list is not empty
+                if (communityList.isNotEmpty()) {
+                    // Get a random item
+                    val randomCommunityItem = communityList.shuffled().first()
+                    _communityList.value = listOf(randomCommunityItem)
+                }
+            } else {
+                Log.e("CommunityViewModel", "Error getting community data: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            Log.e("CommunityViewModel", "Error getting community data: ${e.message}")
+        } finally {
+            _isLoading.value = false
         }
     }
 

@@ -7,9 +7,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.jelajahiapp.navigation.Screen.RecommendationResult.ARG_NAME
 import com.example.jelajahiapp.ui.screen.authorization.ChangePasswordScreen
 import com.example.jelajahiapp.ui.screen.authorization.LoginScreen
 import com.example.jelajahiapp.ui.screen.authorization.SignupScreen
+import com.example.jelajahiapp.ui.screen.community.AddCommunityScreen
 import com.example.jelajahiapp.ui.screen.community.CommunityScreen
 import com.example.jelajahiapp.ui.screen.cultural.CulturalScreen
 import com.example.jelajahiapp.ui.screen.cultural.DetailCulturalScreen
@@ -18,6 +20,7 @@ import com.example.jelajahiapp.ui.screen.explorer.ExplorerScreen
 import com.example.jelajahiapp.ui.screen.favorite.FavoriteScreen
 import com.example.jelajahiapp.ui.screen.home.DetailHomeExplorerScreen
 import com.example.jelajahiapp.ui.screen.home.HomeScreen
+import com.example.jelajahiapp.ui.screen.recommendation.DetailRecommendationScreen
 import com.example.jelajahiapp.ui.screen.recommendation.RecommendationScreen
 import com.example.jelajahiapp.ui.screen.splash.OnBoardingScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -91,9 +94,23 @@ fun NavGraph(
             RecommendationScreen(navController = navController)
         }
 
-        composable(route = Screen.RecommendationResult.route) {
-//            DetailRecommendationContent(navController = navController)
+        composable(Screen.RecommendationResult.route + "/{$ARG_NAME}") { backStackEntry ->
+            val name = backStackEntry.arguments?.getString(ARG_NAME)
+            DetailRecommendationScreen(navController = navController, name = name,
+                navigateToDetailExplorerScreen = { placeId ->
+                    navController.navigate(Screen.DetailExplorer.createRoute(placeId))
+                },
+                navigateBack = {
+                navController.navigate(Screen.RecommendationActivity.route) {
+                    popUpTo(Screen.RecommendationActivity.route) {
+                        inclusive = true
+                    }
+                }
+            })
         }
+//        composable(route = Screen.RecommendationResult.route) {
+////            DetailRecommendationContent(navController = navController)
+//        }
 
 
 
@@ -102,8 +119,40 @@ fun NavGraph(
         }
 
         composable(route = Screen.AddCommunity.route) {
-//            CommunityScreen(navController = navController)
+            AddCommunityScreen(navController = navController)
         }
+
+//        composable(route = "${Screen.EditCommunity.route}/{communityPost}") { backStackEntry ->
+//            val communityPostString = backStackEntry.arguments?.getString("communityPost")
+//            val decodedCommunityJson = Uri.decode(communityPostString.orEmpty())
+//
+//            var communityPost by remember { mutableStateOf<ResponseCommunity?>(null) }
+//            var isError by remember { mutableStateOf(false) }
+//
+//            DisposableEffect(decodedCommunityJson) {
+//                try {
+//                    communityPost = Gson().fromJson(decodedCommunityJson, ResponseCommunity::class.java)
+//                } catch (e: JsonSyntaxException) {
+//                    isError = true
+//                    Log.e("EditCommunity", "Error decoding community post: ${e.message}")
+//                }
+//
+//                onDispose { }
+//            }
+//
+//            if (isError) {
+//                // Handle the case where decoding or parsing fails
+//                Text("Error decoding community post")
+//            } else {
+//                // Render your EditCommunityScreen with communityPost
+//                if (communityPost != null) {
+//                    EditCommunityScreen(navController = navController, communityPost = communityPost!!)
+//                } else {
+//                    // Handle the case where communityPost is null
+//                    Text("Community post is null")
+//                }
+//            }
+//        }
 
         composable(route = Screen.Explorer.route) {
             ExplorerScreen(navController = navController,

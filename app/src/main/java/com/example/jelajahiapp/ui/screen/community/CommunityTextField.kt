@@ -1,6 +1,7 @@
 package com.example.jelajahiapp.ui.screen.community
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -54,3 +55,44 @@ fun CommunityTextField(
         ),
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CommunityTextFieldDescription(
+    textFieldStateCommunity: dataCommunityState,
+    label: String,
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Next,
+    onImeAction: () -> Unit = {}
+) {
+    OutlinedTextField(
+        value = textFieldStateCommunity.text,
+        onValueChange = { textFieldStateCommunity.text = it },
+        label = {
+            Text(
+                text = label,
+                fontFamily = fonts
+            )
+        },
+        modifier = modifier
+            .fillMaxWidth()
+            .height(150.dp), // Adjust the height as needed
+
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = imeAction,
+            keyboardType = KeyboardType.Text
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onImeAction()
+            }
+        ),
+        singleLine = false, // Set to false for multiline
+        shape = RoundedCornerShape(10.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = purple100,
+            unfocusedBorderColor = purple100
+        ),
+    )
+}
+

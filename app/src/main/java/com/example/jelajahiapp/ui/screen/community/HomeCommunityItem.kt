@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,11 +19,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jelajahiapp.R
-import com.example.jelajahiapp.ui.theme.JelajahiAppTheme
+import com.example.jelajahiapp.data.response.ResponseCommunity
+import com.example.jelajahiapp.ui.screen.home.truncate
 import com.example.jelajahiapp.ui.theme.Shapes
 import com.example.jelajahiapp.ui.theme.fonts
 import com.example.jelajahiapp.ui.theme.purple100
@@ -30,19 +31,18 @@ import com.example.jelajahiapp.ui.theme.white100
 
 @Composable
 fun HomeCommunityItem(
-    placeName: String,
-    image: Int,
-    description: String,
+    community: ResponseCommunity,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier
         .height(75.dp)
+        .widthIn(max = 400.dp)
         .background(color = purple100, shape = Shapes.medium)){
         Row (modifier = modifier
             .padding(5.dp),
             verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = painterResource(image),
+                painter = painterResource(R.drawable.icononly),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -52,27 +52,15 @@ fun HomeCommunityItem(
             )
             Column(
                 modifier = modifier
-                    .padding(3.dp), // Ensure the Column takes the full width
+                    .padding(3.dp),
                 horizontalAlignment = Alignment.Start
             ){
-                Text(text = placeName, fontFamily = fonts, fontWeight = FontWeight.Bold, color = white100, fontSize = 14.sp)
+                community.placeName?.let { Text(text = it, fontFamily = fonts, fontWeight = FontWeight.Bold, color = white100, fontSize = 14.sp) }
                 Spacer(modifier = Modifier.height(5.dp))
                 Box (modifier.background(color = white100, shape = Shapes.small).padding(3.dp)){
-                    Text(text = description, fontFamily = fonts, color = purple100, fontSize = 10.sp,lineHeight = 10.sp)
+                    community.description?.let { Text(text = it.truncate(80), fontFamily = fonts, color = purple100, fontSize = 10.sp,lineHeight = 10.sp) }
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ItemPreviews() {
-    JelajahiAppTheme {
-        HomeCommunityItem(
-            placeName = "Golden Retriever",
-            image = R.drawable.lasem,
-            description = "Capture your Indonesian cultural moments now, and let us suggest destinations personalized for you!"
-        )
     }
 }
