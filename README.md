@@ -8,6 +8,10 @@ Welcome to **JelajahI**, the ultimate cultural travel companion designed to imme
 # Android Mobile Developer Used
 JelajahI utilizes the **Figma** platform for crafting the UI and UX of the application, aiming to provide a more realistic look and experience for users. Additionally, the application is developed using **Jetpack Compose**. Jetpack Compose is a modern UI toolkit for building native Android applications, and it is based on the Kotlin programming.
 
+# Download Apk Link
+[JelajahI utilizes the **Figma** platform for crafting the UI and UX of the application, aiming to provide a more realistic look and experience for users. Additionally, the application is developed using **Jetpack Compose**. Jetpack Compose is a modern UI toolkit for building native Android applications, and it is based on the Kotlin programming.](https://drive.google.com/file/d/1aERSLzyA4iCM5m9dwg_LSFvTGAm5zg2S/view?usp=sharing)
+
+
 ## Mockup Preview
 ![JelajahI Preview 1](https://raw.githubusercontent.com/reynard26/Jelajahi-Assets/main/12.png)
 ![JelajahI Preview 2](https://raw.githubusercontent.com/reynard26/Jelajahi-Assets/main/13.png)
